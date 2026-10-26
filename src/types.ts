@@ -17,18 +17,17 @@ export interface LoveReason {
   color?: string;
 }
 
-export interface QuestionOption {
-  id: number;
-  text: string;
-  response: string;
-}
-
 export interface QuestionData {
-  badge: string;
-  intro: string;
-  question: string;
-  options: QuestionOption[];
-  buttonText: string;
+  badge: string; // "Can I Ask You Something? ♡"
+  intro: string; // "ก่อนจะไปต่อ ขอถามอะไรสโนอย่างนึงได้ไหมคะ 🥺"
+  question: string; // "ถ้าเลือกได้ สโนอยากเก็บความทรงจำแบบไหนของเราไว้ให้นานที่สุด?"
+  placeholder: string; // "พิมพ์คำตอบของสโนที่นี่ได้เลยนะ... ♡"
+  submitButtonText: string; // "ส่งคำตอบให้บลู ♡"
+  editButtonText: string; // "แก้ไขคำตอบ"
+  successBadge: string; // "บันทึกไว้ในใจบลูแล้วนะ ♡"
+  replyFromBoyfriend: string; // "ขอบคุณสำหรับคำตอบนะคะ บลูจะเก็บความทรงจำนี้ไว้เป็นอย่างดีเลย ♡"
+  continueButtonText: string; // "ไปต่อกันนะ ♡"
+  emptyWarningText: string; // "พิมพ์คำตอบให้บลูหน่อยน้า 🥺"
 }
 
 export interface SiteContent {
@@ -42,18 +41,25 @@ export interface SiteContent {
     girlfriendName: string; // "สโน"
     specialCallSign: string; // "สโนคะ"
   };
+  navigation: {
+    storyCounterPrefix: string; // "Our Story"
+    backButtonText: string; // "ย้อนกลับ"
+  };
   music: {
     title: string;
     artist: string;
     albumCover: string;
     audioSrc: string; // local file e.g. '/music/love-song.mp3' or direct URL
-    youtubeEmbedUrl?: string;
+    floatingPrompt: string; // "แตะเพื่อเปิดเพลงคลอเบา ๆ ♡"
   };
   opening: {
     badge: string;
     title: string;
     subtitle: string;
+    envelopeNote: string; // "For Sno ♡"
+    envelopeSubtitle: string; // "Our Little Storybook"
     buttonText: string;
+    hintText: string;
   };
   memoriesHeader: {
     titleEn: string;
@@ -67,6 +73,7 @@ export interface SiteContent {
     subtitle: string;
     buttonText: string;
     reasons: LoveReason[];
+    bottomNote: string;
   };
   questionSection: QuestionData;
   intermission: {

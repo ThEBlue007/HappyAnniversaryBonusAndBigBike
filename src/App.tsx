@@ -16,7 +16,9 @@ import { ImagePreviewModal } from './components/ImagePreviewModal';
 export const App: React.FC = () => {
   const [currentScene, setCurrentScene] = useState<number>(0);
   const [direction, setDirection] = useState<number>(1);
-  const [selectedQuestionOptionId, setSelectedQuestionOptionId] = useState<number | null>(null);
+  const [snoAnswer, setSnoAnswer] = useState<string>(() => {
+    return localStorage.getItem('sno_surprise_answer') || '';
+  });
   
   // Custom images preview state (for Blue's convenience)
   const [customImages, setCustomImages] = useState<Record<number, string>>({});
@@ -136,12 +138,12 @@ export const App: React.FC = () => {
       return <SceneLittleThings onNext={goToNextScene} />;
     }
 
-    // Scene 8: Question for Sno (Can I Ask You Something? ♡)
+    // Scene 8: Question for Sno (Can I Ask You Something? ♡) - Write-in
     if (currentScene === memories.length + 2) {
       return (
         <SceneQuestion
-          selectedOptionId={selectedQuestionOptionId}
-          onSelectOption={(id) => setSelectedQuestionOptionId(id)}
+          savedAnswer={snoAnswer}
+          onSaveAnswer={(ans) => setSnoAnswer(ans)}
           onNext={goToNextScene}
         />
       );
@@ -200,7 +202,7 @@ export const App: React.FC = () => {
       {/* Floating Scrapbook Music Player */}
       <MusicPlayer />
 
-      {/* Photo Preview & Upload Modal (for Blue) */}
+      {/* Photo Preview & Secret Menu (for Blue) */}
       <ImagePreviewModal
         customImages={customImages}
         onUpdateImage={(id, base64) =>
@@ -209,6 +211,7 @@ export const App: React.FC = () => {
         onResetImages={() => setCustomImages({})}
         targetMemoryId={targetMemoryId}
         onCloseTarget={() => setTargetMemoryId(null)}
+        snoAnswer={snoAnswer}
       />
     </div>
   );
