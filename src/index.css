@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  body {
+    background-color: #faf6ee;
+    color: #45352b;
+    font-family: 'Itim', 'Mali', sans-serif;
+    overflow-x: hidden;
+  }
+}
+
+/* Scrapbook Paper Texture Background */
+.bg-scrapbook-pattern {
+  background-color: #faf6ee;
+  background-image: 
+    radial-gradient(#eedecb 0.75px, transparent 0.75px),
+    radial-gradient(#eedecb 0.75px, #faf6ee 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0, 15px 15px;
+}
+
+/* Washi Tape styling */
+.washi-tape {
+  position: absolute;
+  height: 22px;
+  backdrop-filter: blur(1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  border-left: 2px dashed rgba(255, 255, 255, 0.4);
+  border-right: 2px dashed rgba(255, 255, 255, 0.4);
+  z-index: 20;
+}
+
+/* Handwritten letter lined paper effect */
+.lined-paper {
+  background-color: #fffdf9;
+  background-image: linear-gradient(#f0e6d8 1px, transparent 1px);
+  background-size: 100% 2.2rem;
+  line-height: 2.2rem;
+}
+
+/* Gentle envelope flap */
+.envelope-flap {
+  clip-path: polygon(0 0, 50% 50%, 100% 0, 100% 100%, 0 100%);
+}
+
+/* Custom romantic scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #faf4ea;
+}
+::-webkit-scrollbar-thumb {
+  background: #fccdd7;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #f8a5b7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
