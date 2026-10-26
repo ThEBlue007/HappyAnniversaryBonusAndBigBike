@@ -37,7 +37,7 @@ export const MemoriesScrapbook: React.FC<MemoriesScrapbookProps> = ({
       <div className="space-y-16 sm:space-y-24">
         {memories.map((item, index) => {
           const isEven = index % 2 === 1;
-          const imageSrc = customImages[item.id] || item.image;
+          const imageSrc = customImages[item.id] || item.image || (item.images && item.images[0]) || '/images/photo-1.jpg';
 
           return (
             <MemoryCard

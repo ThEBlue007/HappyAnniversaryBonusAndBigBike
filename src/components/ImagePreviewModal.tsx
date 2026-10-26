@@ -2,11 +2,18 @@ import React, { useRef, useState, useEffect } from 'react';
 import { Camera, X, Upload, RefreshCw, Heart, Clock, Copy, Check } from 'lucide-react';
 import { siteContent } from '../content';
 
+interface ImageSlot {
+  sceneId: number;
+  sceneTitle: string;
+  photoPath: string;
+  label: string;
+}
+
 interface ImagePreviewModalProps {
-  customImages: Record<number, string>;
-  onUpdateImage: (memoryId: number, base64Url: string) => void;
+  customImages: Record<string, string>;
+  onUpdateImage: (photoPath: string, base64Url: string) => void;
   onResetImages: () => void;
-  targetMemoryId?: number | null;
+  targetPhotoPath?: string | null;
   onCloseTarget?: () => void;
   snoAnswer?: string;
 }
@@ -15,7 +22,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
   customImages,
   onUpdateImage,
   onResetImages,
-  targetMemoryId,
+  targetPhotoPath,
   onCloseTarget,
   snoAnswer = '',
 }) => {
@@ -26,8 +33,21 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
   const [storedTime, setStoredTime] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [selectedSlot, setSelectedSlot] = useState<number>(1);
-  const memories = siteContent.memories;
+  const [selectedPath, setSelectedPath] = useState<string>('/images/photo-1.jpg');
+
+  // Build the full 8-photo slot list from siteContent.memories
+  const imageSlots: ImageSlot[] = [];
+  siteContent.memories.forEach((m) => {
+    const list = m.images || [m.image || '/images/photo-1.jpg'];
+    list.forEach((p, idx) => {
+      imageSlots.push({
+        sceneId: m.id,
+        sceneTitle: m.title,
+        photoPath: p,
+        label: list.length > 1 ? `รูปที่ ${idx + 1}/3` : 'รูปเดี่ยว',
+      });
+    });
+  });
 
   // Sync answer from localStorage whenever modal opens
   useEffect(() => {
@@ -39,14 +59,14 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     }
   }, [isOpen, snoAnswer]);
 
-  // If a specific memory photo was clicked on the page, open modal directly for that slot
+  // If a specific memory photo was clicked on the page, open modal directly for that photo
   useEffect(() => {
-    if (targetMemoryId) {
-      setSelectedSlot(targetMemoryId);
+    if (targetPhotoPath) {
+      setSelectedPath(targetPhotoPath);
       setActiveTab('photos');
       setIsOpen(true);
     }
-  }, [targetMemoryId]);
+  }, [targetPhotoPath]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -55,15 +75,15 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     const reader = new FileReader();
     reader.onload = () => {
       if (typeof reader.result === 'string') {
-        onUpdateImage(selectedSlot, reader.result);
+        onUpdateImage(selectedPath, reader.result);
       }
     };
     reader.readAsDataURL(file);
     e.target.value = '';
   };
 
-  const handleSelectSlotAndUpload = (id: number) => {
-    setSelectedSlot(id);
+  const handleSelectSlotAndUpload = (path: string) => {
+    setSelectedPath(path);
     fileInputRef.current?.click();
   };
 
@@ -117,7 +137,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                   เมนูลับสำหรับบลู (Blue's Secret Menu)
                 </h3>
                 <p className="font-body text-xs text-scrapbook-brown-light">
-                  จัดการรูปภาพพรีวิว และแอบอ่านคำตอบที่สโนพิมพ์
+                  จัดการรูปภาพพรีวิว (8 ช่อง) และแอบอ่านคำตอบที่สโนพิมพ์
                 </p>
               </div>
 
@@ -140,7 +160,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                 }`}
               >
                 <Camera size={13} />
-                <span>ลองจัดรูปภาพ (6 รูป)</span>
+                <span>ลองจัดรูปภาพ ({imageSlots.length} รูป)</span>
               </button>
 
               <button
@@ -161,21 +181,21 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
 
             {/* TAB 1: Photos Preview */}
             {activeTab === 'photos' && (
-              <div className="space-y-3 py-2">
-                {memories.map((m) => {
-                  const hasCustom = !!customImages[m.id];
+              <div className="space-y-2.5 py-1">
+                {imageSlots.map((slot) => {
+                  const hasCustom = !!customImages[slot.photoPath];
 
                   return (
                     <div
-                      key={m.id}
+                      key={slot.photoPath}
                       className="flex items-center justify-between p-2.5 rounded-xl bg-[#faf5ed] border border-[#eee2d4]"
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-11 h-11 rounded-lg bg-white border border-[#e8ded0] overflow-hidden flex items-center justify-center flex-shrink-0">
                           {hasCustom ? (
                             <img
-                              src={customImages[m.id]}
-                              alt={`Preview ${m.id}`}
+                              src={customImages[slot.photoPath]}
+                              alt={slot.photoPath}
                               className="w-full h-full object-cover"
                             />
                           ) : (
@@ -184,16 +204,16 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                         </div>
                         <div>
                           <div className="font-cute text-xs sm:text-sm font-semibold text-scrapbook-brown-dark">
-                            รูปที่ {m.id}: {m.title}
+                            ฉาก {slot.sceneId}: {slot.label}
                           </div>
                           <div className="font-body text-[11px] text-scrapbook-brown-light">
-                            ไฟล์จริง: <code className="bg-white px-1 rounded text-scrapbook-pink-600 font-bold">{m.image}</code>
+                            ชื่อไฟล์: <code className="bg-white px-1 rounded text-scrapbook-pink-600 font-bold">{slot.photoPath}</code>
                           </div>
                         </div>
                       </div>
 
                       <button
-                        onClick={() => handleSelectSlotAndUpload(m.id)}
+                        onClick={() => handleSelectSlotAndUpload(slot.photoPath)}
                         className="px-3 py-1 rounded-full bg-scrapbook-pink-400 hover:bg-scrapbook-pink-500 text-white font-cute text-xs font-semibold shadow-xs flex items-center gap-1 transition-all"
                       >
                         <Upload size={11} />
@@ -204,7 +224,13 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                 })}
 
                 <div className="bg-[#fff3f5] p-3 rounded-xl border border-scrapbook-pink-200 text-xs font-body text-scrapbook-brown leading-relaxed mt-2">
-                  💡 <span className="font-bold">วิธีใส่รูปจริง:</span> นำรูปมาวางในโฟลเดอร์ <code className="bg-white px-1 rounded text-scrapbook-pink-600 font-bold">public/images/</code> โดยตั้งชื่อว่า <code className="bg-white px-1 rounded text-scrapbook-pink-600 font-bold">photo-1.jpg</code> ถึง <code className="bg-white px-1 rounded text-scrapbook-pink-600 font-bold">photo-6.jpg</code> ได้เลยครับ
+                  💡 <span className="font-bold">วิธีใส่รูปจริงในโปรเจกต์:</span> นำรูปมาวางในโฟลเดอร์ <code className="bg-white px-1 rounded text-scrapbook-pink-600 font-bold">public/images/</code> โดยตั้งชื่อตามนี้:
+                  <ul className="list-disc list-inside mt-1 space-y-0.5 text-[11px]">
+                    <li>ฉาก 1: <code className="bg-white px-1 rounded text-scrapbook-pink-600 font-bold">photo-1.jpg</code> (1 รูป)</li>
+                    <li>ฉาก 2: <code className="bg-white px-1 rounded text-scrapbook-pink-600 font-bold">photo-2-1.jpg, photo-2-2.jpg, photo-2-3.jpg</code> (3 รูป)</li>
+                    <li>ฉาก 3: <code className="bg-white px-1 rounded text-scrapbook-pink-600 font-bold">photo-3-1.jpg, photo-3-2.jpg, photo-3-3.jpg</code> (3 รูป)</li>
+                    <li>ฉาก 4: <code className="bg-white px-1 rounded text-scrapbook-pink-600 font-bold">photo-4.jpg</code> (1 รูป)</li>
+                  </ul>
                 </div>
 
                 <div className="flex justify-between items-center pt-2">
@@ -262,7 +288,7 @@ export const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                       ยังไม่มีคำตอบที่สโนพิมพ์
                     </p>
                     <p className="font-body text-xs text-scrapbook-brown-light max-w-xs mx-auto">
-                      เมื่อสโนเปิดอ่านถึงฉากที่ 9 แล้วพิมพ์ตอบคำตอบ ข้อความจะมาแสดงตรงนี้โดยอัตโนมัติครับ ♡
+                      เมื่อสโนเปิดอ่านถึงฉากคำถามแล้วพิมพ์ตอบ ข้อความจะมาแสดงตรงนี้โดยอัตโนมัติครับ ♡
                     </p>
                   </div>
                 )}

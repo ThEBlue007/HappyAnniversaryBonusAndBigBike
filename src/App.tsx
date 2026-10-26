@@ -4,7 +4,6 @@ import { siteContent } from './content';
 import { StoryNavigation } from './components/StoryNavigation';
 import { SceneOpening } from './components/SceneOpening';
 import { SceneMemory } from './components/SceneMemory';
-import { SceneLittleThings } from './components/SceneLittleThings';
 import { SceneQuestion } from './components/SceneQuestion';
 import { SceneIntermission } from './components/SceneIntermission';
 import { SceneFinalLetter } from './components/SceneFinalLetter';
@@ -20,15 +19,16 @@ export const App: React.FC = () => {
     return localStorage.getItem('sno_surprise_answer') || '';
   });
   
-  // Custom images preview state (for Blue's convenience)
-  const [customImages, setCustomImages] = useState<Record<number, string>>({});
-  const [targetMemoryId, setTargetMemoryId] = useState<number | null>(null);
+  // Custom images preview state (keyed by photoPath e.g. '/images/photo-2-1.jpg')
+  const [customImages, setCustomImages] = useState<Record<string, string>>({});
+  const [targetPhotoPath, setTargetPhotoPath] = useState<string | null>(null);
 
   // Touch gesture state for mobile swipe
   const touchStartXRef = useRef<number | null>(null);
 
   const memories = siteContent.memories;
-  const totalScenes = 1 + memories.length + 5; // 1 Opening + 6 Memories + 1 Little Things + 1 Question + 1 Intermission + 1 Final Letter + 1 Final Reveal = 13 total scenes (ending at Final Screen)
+  // 1 Opening + 4 Memories + 1 Question + 1 Intermission + 1 Final Letter + 1 Final Reveal = 10 total scenes (ending at Final Screen)
+  const totalScenes = 1 + memories.length + 5; 
 
   const goToNextScene = () => {
     if (currentScene < totalScenes - 1) {
@@ -75,10 +75,8 @@ export const App: React.FC = () => {
 
     // Minimum swipe threshold of 60px
     if (deltaX < -60) {
-      // Swipe left -> Next scene
       goToNextScene();
     } else if (deltaX > 60) {
-      // Swipe right -> Prev scene
       goToPrevScene();
     }
   };
@@ -117,29 +115,23 @@ export const App: React.FC = () => {
       return <SceneOpening onNext={goToNextScene} />;
     }
 
-    // Scenes 1 to 6: Memories 1 to 6
+    // Scenes 1 to 4: Memories 1 to 4
     if (currentScene >= 1 && currentScene <= memories.length) {
       const memoryIndex = currentScene - 1;
       const item = memories[memoryIndex];
-      const imageSrc = customImages[item.id] || item.image;
 
       return (
         <SceneMemory
           item={item}
-          imageSrc={imageSrc}
+          customImages={customImages}
           onNext={goToNextScene}
-          onTriggerPicker={() => setTargetMemoryId(item.id)}
+          onTriggerPicker={(path) => setTargetPhotoPath(path)}
         />
       );
     }
 
-    // Scene 7: Little Things I Love About You
+    // Scene 5: Question for Sno (Write-in question)
     if (currentScene === memories.length + 1) {
-      return <SceneLittleThings onNext={goToNextScene} />;
-    }
-
-    // Scene 8: Question for Sno (Can I Ask You Something? ♡) - Write-in
-    if (currentScene === memories.length + 2) {
       return (
         <SceneQuestion
           savedAnswer={snoAnswer}
@@ -149,22 +141,22 @@ export const App: React.FC = () => {
       );
     }
 
-    // Scene 9: A Little Note Before the End
-    if (currentScene === memories.length + 3) {
+    // Scene 6: A Little Note Before the End
+    if (currentScene === memories.length + 2) {
       return <SceneIntermission onNext={goToNextScene} />;
     }
 
-    // Scene 10: Final Letter
-    if (currentScene === memories.length + 4) {
+    // Scene 7: Final Letter
+    if (currentScene === memories.length + 3) {
       return <SceneFinalLetter onNext={goToNextScene} />;
     }
 
-    // Scene 11: Final Reveal (Cake in Car Drawer Clue)
-    if (currentScene === memories.length + 5) {
+    // Scene 8: Final Reveal (Cake in Car Drawer Clue)
+    if (currentScene === memories.length + 4) {
       return <SceneFinalReveal onNext={goToNextScene} />;
     }
 
-    // Scene 12: Final Closing Screen
+    // Scene 9: Final Closing Screen
     return <SceneFinalScreen onRestart={handleRestart} />;
   };
 
@@ -205,12 +197,12 @@ export const App: React.FC = () => {
       {/* Photo Preview & Secret Menu (for Blue) */}
       <ImagePreviewModal
         customImages={customImages}
-        onUpdateImage={(id, base64) =>
-          setCustomImages((prev) => ({ ...prev, [id]: base64 }))
+        onUpdateImage={(path, base64) =>
+          setCustomImages((prev) => ({ ...prev, [path]: base64 }))
         }
         onResetImages={() => setCustomImages({})}
-        targetMemoryId={targetMemoryId}
-        onCloseTarget={() => setTargetMemoryId(null)}
+        targetPhotoPath={targetPhotoPath}
+        onCloseTarget={() => setTargetPhotoPath(null)}
         snoAnswer={snoAnswer}
       />
     </div>

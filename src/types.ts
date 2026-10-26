@@ -3,7 +3,8 @@ export interface MemoryItem {
   title: string;
   caption: string;
   date?: string;
-  image: string; // e.g. '/images/photo-1.jpg'
+  images: string[]; // Array of photo paths e.g. ['/images/photo-1.jpg'] or ['/images/photo-2-1.jpg', '/images/photo-2-2.jpg', '/images/photo-2-3.jpg']
+  image?: string; // Optional single image fallback
   tapeColor?: 'pink' | 'yellow' | 'blue' | 'green' | 'peach';
   rotation?: number; // slight tilt in degrees, e.g. -2, 1.5, -1
   sticker?: 'heart' | 'sparkle' | 'flower' | 'camera' | 'star' | 'coffee';
@@ -67,7 +68,7 @@ export interface SiteContent {
     subtitle: string;
   };
   memories: MemoryItem[];
-  reasonsSection: {
+  reasonsSection?: {
     titleEn: string;
     titleTh: string;
     subtitle: string;
