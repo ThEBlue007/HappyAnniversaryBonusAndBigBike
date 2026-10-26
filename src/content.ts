@@ -48,7 +48,7 @@ export const siteContent: SiteContent = {
   // -----------------------------------------------------------------------
   music: {
     title: 'เรื่องราวของเรา (Our Song)',
-    artist: 'For Sno ♡',
+    artist: 'For Snow ♡',
     albumCover: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=150&auto=format&fit=crop&q=80',
     // สามารถนำไฟล์เพลง .mp3 มาใส่ไว้ที่ public/music/our-song.mp3 แล้วแก้ตรงนี้เป็น '/music/our-song.mp3' ได้เลย
     audioSrc: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-acoustic-guitar-112191.mp3',
@@ -62,7 +62,7 @@ export const siteContent: SiteContent = {
     badge: 'A Little Surprise 💌',
     title: 'A little story, made just for you ♡',
     subtitle: 'มีเรื่องราวเล็ก ๆ ที่อยากให้สโนลองอ่านดูนะ',
-    envelopeNote: 'For Sno ♡',
+    envelopeNote: 'For Snow ♡',
     envelopeSubtitle: 'Our Little Storybook',
     buttonText: 'เริ่มเรื่องราวของเรากัน ♡',
     hintText: 'แตะที่ซองจดหมายหรือกดปุ่มเพื่อเริ่มเรื่องราว ♡',
@@ -86,7 +86,7 @@ export const siteContent: SiteContent = {
     {
       id: 1,
       title: 'Memory 1 — The Beginning',
-      caption: ' รูปนี้เป็นรูปแรกหลังจากวันแรกที่เราเริ่มคุยกันค่ะ ♡ ',
+      caption: ' รูปนี้เป็นรูปแรกในเครื่องหลังจากวันแรกที่เราเริ่มคุยกัน ♡ ',
       date: '26 Sep 2026',
       images: ['/images/photo-1.jpg'],
       tapeColor: 'pink',
@@ -97,8 +97,8 @@ export const siteContent: SiteContent = {
     {
       id: 2,
       title: 'Memory 2 — A Little Moment',
-      caption: 'เป็นช่วงเวลาดี ๆ ที่เราเริ่มได้ทำอะไรร่วมกันมากขึ้น ได้แชร์เรื่องราวในแต่ละวันด้วยกัน ♡',
-      date: 'ช่วงเวลาดี ๆ ของเรา',
+      caption: 'เป็นช่วงเวลาดี ๆ ที่เราเริ่มได้คุยด้วยกันมากขึ้น ได้แชร์เรื่องราวในแต่ละวันด้วยกัน ♡',
+      date: 'Good Memory',
       images: [
         '/images/photo-2-1.jpg',
         '/images/photo-2-2.jpg',
@@ -112,17 +112,16 @@ export const siteContent: SiteContent = {
     {
       id: 3,
       title: 'Memory 3 — Your Smile',
-      caption: 'หนึ่งในสิ่งที่เราชอบก็คือเวลาที่สโนยิ้ม แค่เห็นก็ทำให้เราเผลอยิ้มตามได้เหมือนกันนะ',
-      date: 'รอยยิ้มของสโน',
+      caption: 'หนึ่งในสิ่งที่เราชอบก็คือเวลาที่สโนยิ้ม',
+      date: '13 Oct. 2026',
       images: [
         '/images/photo-3-1.jpg',
         '/images/photo-3-2.jpg',
-        '/images/photo-3-3.jpg',
       ],
       tapeColor: 'peach',
       rotation: -2.2,
       sticker: 'flower',
-      buttonText: 'รอยยิ้มที่ชอบที่สุด 🌷',
+      buttonText: 'ช่วงเวลาที่ชอบที่สุด 🌷',
     },
     {
       id: 4,
@@ -133,7 +132,7 @@ export const siteContent: SiteContent = {
       tapeColor: 'blue',
       rotation: 1.2,
       sticker: 'heart',
-      buttonText: 'มีคำถามอยากถามสโน 🥺',
+      buttonText: 'มีคำถามอยากถามสโน ',
     },
   ],
 
@@ -151,7 +150,7 @@ export const siteContent: SiteContent = {
     successBadge: 'บันทึกไว้ในใจเราแล้วนะ ♡',
     replyFromBoyfriend: 'ขอบคุณสำหรับคำตอบนะคะ เราจะเก็บความทรงจำนี้ไว้เป็นอย่างดีเลย ♡',
     continueButtonText: 'ไปต่อกันนะ ♡',
-    emptyWarningText: 'พิมพ์คำตอบให้หน่อยน้า 🥺',
+    emptyWarningText: 'พิมพ์คำตอบให้หน่อยน้า ',
   },
 
   // -----------------------------------------------------------------------
@@ -196,9 +195,9 @@ export const siteContent: SiteContent = {
       'ขอบคุณที่เป็นสโนคนนี้นะ ♡',
     ],
     nextPageButtonText: 'อ่านต่อ ♡',
-    proceedToClueButtonText: 'มีอีกสิ่งหนึ่งจะบอก... 🎂',
+    proceedToClueButtonText: 'มีอีกสิ่งหนึ่งจะบอก... ',
     cakeCluePrefix: 'แล้วก็... วันนี้ยังมีอะไรอีกนิดหน่อยที่เราเตรียมไว้ให้ด้วย',
-    cakeClue: 'สโนคะ หันไปลองเปิดลิ้นชักด้านหน้าดูหน่อยค่ะ 🎂🤍',
+    cakeClue: 'สโนคะ หันไปลองเปิดลิ้นชักด้านหน้าดูหน่อยค่ะ 💙',
     cakeClueSuffix: ' ♡ ',
     loveNote: 'รักสโนนะ ♡',
     signOff: 'จากบลู',
@@ -209,9 +208,9 @@ export const siteContent: SiteContent = {
   // ไฮไลต์คำใบ้เปิดลิ้นชักหน้ารถในชีวิตจริง
   // -----------------------------------------------------------------------
   finalReveal: {
-    badge: 'A Little Surprise 🎂🤍',
+    badge: 'A Little Surprise 🤍',
     prefix: 'แล้วก็... วันนี้ยังมีอะไรอีกนิดหน่อยที่เราเตรียมไว้ให้ด้วย',
-    cakeClue: 'สโนคะ หันไปลองเปิดลิ้นชักด้านหน้าดูหน่อยค่ะ 🎂🤍',
+    cakeClue: 'สโนคะ หันไปลองเปิดลิ้นชักด้านหน้าดูหน่อยค่ะ 💙',
     suffix: 'หวังว่าจะยิ้มตอนเห็นนะ ♡',
     buttonText: 'จบเรื่องราวของวันนี้ 💗',
   },

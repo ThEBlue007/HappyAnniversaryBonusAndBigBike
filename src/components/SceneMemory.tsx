@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Calendar, Camera, Heart } from 'lucide-react';
+import { ArrowRight, Calendar, Camera, Heart, ZoomIn } from 'lucide-react';
 import type { MemoryItem } from '../types';
 import { WashiTape, PolaroidPlaceholder } from './DoodleDecorations';
+import { ImageZoomModal } from './ImageZoomModal';
 
 interface SceneMemoryProps {
   item: MemoryItem;
@@ -25,6 +26,7 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
   const isMultiple = photoList.length > 1;
   const [frontIndex, setFrontIndex] = useState<number>(0);
   const [imgErrors, setImgErrors] = useState<Record<number, boolean>>({});
+  const [isZoomOpen, setIsZoomOpen] = useState<boolean>(false);
 
   const handleImageError = (index: number) => {
     setImgErrors((prev) => ({ ...prev, [index]: true }));
@@ -78,6 +80,9 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
     }
   };
 
+  // Resolved image sources (applying custom previews if any)
+  const resolvedImages = photoList.map((p) => customImages[p] || p);
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center p-3 sm:p-5 relative select-none">
       <div className="w-full max-w-sm sm:max-w-md flex flex-col items-center space-y-3.5">
@@ -109,6 +114,9 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
                 onClick={() => {
                   if (isMultiple && !isFront) {
                     setFrontIndex(idx);
+                  } else if (!imgErrors[idx]) {
+                    // Clicking front photo also opens zoom modal!
+                    setIsZoomOpen(true);
                   }
                 }}
                 className={`w-64 sm:w-72 max-w-full cursor-pointer transition-shadow ${
@@ -147,6 +155,22 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
                         className="w-full h-full object-cover select-none"
                         onError={() => handleImageError(idx)}
                       />
+                    )}
+
+                    {/* Cute Zoom Button on front photo */}
+                    {isFront && !imgErrors[idx] && (
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setFrontIndex(idx);
+                          setIsZoomOpen(true);
+                        }}
+                        className="absolute top-2 left-2 z-30 px-2 py-1 rounded-full bg-white/90 hover:bg-white text-scrapbook-brown-dark shadow-xs flex items-center gap-1 font-cute text-[10px] transition-all hover:scale-105 active:scale-95 backdrop-blur-2xs border border-[#eddcd0]"
+                        title="กดซูมดูรูปขนาดใหญ่"
+                      >
+                        <ZoomIn size={12} className="text-scrapbook-pink-500" />
+                        <span>ซูมดูรูป ♡</span>
+                      </button>
                     )}
 
                     {/* Blue's Quick Image Upload Overlay */}
@@ -215,7 +239,16 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
               ))}
             </div>
             <span className="font-cute text-[11px] text-scrapbook-pink-500/80 animate-pulse">
-              แตะที่รูปเพื่อสลับดูรูปอื่นได้นะ ♡
+              แตะรูปเพื่อซูม หรือแตะเพื่อสลับดูรูปอื่นได้นะ ♡
+            </span>
+          </div>
+        )}
+
+        {/* Single Photo zoom hint */}
+        {!isMultiple && (
+          <div className="text-center pt-0.5">
+            <span className="font-cute text-[11px] text-scrapbook-brown-light/70">
+              แตะที่รูปเพื่อซูมดูรูปใหญ่ได้นะ ♡
             </span>
           </div>
         )}
@@ -256,6 +289,18 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
           </button>
         </div>
       </div>
+
+      {/* Fullscreen Image Zoom Modal */}
+      <ImageZoomModal
+        isOpen={isZoomOpen}
+        onClose={() => setIsZoomOpen(false)}
+        images={resolvedImages}
+        currentIndex={frontIndex}
+        onIndexChange={(newIdx) => setFrontIndex(newIdx)}
+        title={item.title}
+        date={item.date}
+        caption={item.caption}
+      />
     </div>
   );
 };
