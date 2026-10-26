@@ -49,9 +49,9 @@ export interface SiteContent {
   music: {
     title: string;
     artist: string;
-    albumCover: string;
-    audioSrc: string; // local file e.g. '/music/love-song.mp3' or direct URL
-    floatingPrompt: string; // "แตะเพื่อเปิดเพลงคลอเบา ๆ ♡"
+    albumCover?: string; // Optional - defaults to realistic cute vinyl disc
+    audioSrc: string; // local file e.g. '/music/our-song.mp3' or direct URL
+    floatingPrompt?: string; // "แตะเพื่อเปิดเพลงคลอเบา ๆ ♡"
   };
   opening: {
     badge: string;

@@ -51,9 +51,10 @@ export const siteContent: SiteContent = {
   music: {
     title: 'เรื่องราวของเรา (Our Song)',
     artist: 'For Snow ♡',
-    albumCover: 'https://images.unsplash.com/photo-1518895949257-7621c3c786d7?w=150&auto=format&fit=crop&q=80',
-    // สามารถนำไฟล์เพลง .mp3 มาใส่ไว้ที่ public/music/our-song.mp3 แล้วแก้ตรงนี้เป็น '/music/our-song.mp3' ได้เลย
-    audioSrc: 'https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=romantic-acoustic-guitar-112191.mp3',
+    // ไม่จำเป็นต้องใส่รูปภาพ ระบบจะดีไซน์เป็นแผ่นเสียงไวนิลหมุนสุดโรแมนติกให้อัตโนมัติ ♡
+    albumCover: '',
+    // ไฟล์เพลงในโฟลเดอร์ public/music/our-song.mp3
+    audioSrc: '/music/our-song.mp3',
     floatingPrompt: 'แตะเพื่อเปิดเพลงคลอเบา ๆ ♡',
   },
 

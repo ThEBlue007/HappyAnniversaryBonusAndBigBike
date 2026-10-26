@@ -2,20 +2,85 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Volume2, VolumeX, Music, ChevronDown, ChevronUp } from 'lucide-react';
 import { siteContent } from '../content';
 
+// Reusable Romantic Vinyl Record Disc Component
+const VinylDisc: React.FC<{
+  isPlaying: boolean;
+  size?: 'sm' | 'md';
+  coverUrl?: string;
+}> = ({ isPlaying, size = 'md', coverUrl }) => {
+  // Check if coverUrl is a valid image (not an audio file like .mp3)
+  const isImageValid = Boolean(
+    coverUrl &&
+    coverUrl.trim() !== '' &&
+    !coverUrl.match(/\.(mp3|wav|ogg|m4a|aac)$/i)
+  );
+
+  const [imgError, setImgError] = useState<boolean>(false);
+
+  const sizeClasses = size === 'sm' ? 'w-10 h-10' : 'w-14 h-14 sm:w-16 sm:h-16';
+  const centerSizes = size === 'sm' ? 'w-4 h-4' : 'w-6 h-6 sm:w-7 sm:h-7';
+
+  return (
+    <div
+      className={`relative ${sizeClasses} rounded-full flex items-center justify-center bg-gradient-to-tr from-[#140e0b] via-[#2a1e17] to-[#120d0a] shadow-md border-2 border-[#fffdfa] flex-shrink-0 overflow-hidden ${
+        isPlaying ? 'animate-spin-slow' : ''
+      }`}
+    >
+      {/* Vinyl Grooves (Concentric Circles) */}
+      <div className="absolute inset-1 rounded-full border border-white/10 pointer-events-none" />
+      <div className="absolute inset-2 rounded-full border border-white/15 border-dashed pointer-events-none" />
+      <div className="absolute inset-3 rounded-full border border-white/10 pointer-events-none" />
+      <div className="absolute inset-4 rounded-full border border-white/5 pointer-events-none" />
+
+      {/* Vinyl Light Glare / Sheen effect */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-40"
+        style={{
+          background:
+            'conic-gradient(from 45deg, transparent 0deg, rgba(255,255,255,0.2) 45deg, transparent 90deg, transparent 180deg, rgba(255,255,255,0.2) 225deg, transparent 270deg)',
+        }}
+      />
+
+      {/* Center Label (Sticker / Image) */}
+      {isImageValid && !imgError ? (
+        <div className={`relative ${centerSizes} rounded-full overflow-hidden border border-white shadow-xs`}>
+          <img
+            src={coverUrl}
+            alt="Album Cover"
+            className="w-full h-full object-cover"
+            onError={() => setImgError(true)}
+          />
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#fdfbf7] border border-[#3a281e]" />
+          </div>
+        </div>
+      ) : (
+        /* Cute Romantic Vinyl Sticker Label with Heart */
+        <div className={`relative ${centerSizes} rounded-full bg-gradient-to-br from-[#ffd5df] to-[#f8a5b7] border border-[#f0718f]/70 flex flex-col items-center justify-center shadow-xs`}>
+          <span className="text-[8px] sm:text-[9px] text-[#8a334d] font-cute select-none leading-none">
+            ♡
+          </span>
+          <div className="w-1.5 h-1.5 rounded-full bg-[#fdfbf7] border border-[#52291d] mt-0.5" />
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const MusicPlayer: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [volume, setVolume] = useState<number>(0.65);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
-  
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const musicData = siteContent.music;
 
   // Handle Play/Pause
   const togglePlay = () => {
     if (!audioRef.current) return;
-    
+
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
@@ -25,7 +90,7 @@ export const MusicPlayer: React.FC = () => {
         playPromise
           .then(() => setIsPlaying(true))
           .catch((err) => {
-            console.log("Audio play prevented:", err);
+            console.log('Audio play prevented:', err);
             setIsPlaying(false);
           });
       }
@@ -67,7 +132,6 @@ export const MusicPlayer: React.FC = () => {
     };
 
     const handleEnded = () => {
-      // Loop smoothly
       audio.currentTime = 0;
       audio.play().catch(() => {});
     };
@@ -92,29 +156,22 @@ export const MusicPlayer: React.FC = () => {
       />
 
       {/* Floating Scrapbook Music Player */}
-      <div className="fixed bottom-4 right-4 z-40 max-w-[90vw] transition-all duration-300">
+      <div className="fixed bottom-4 right-4 z-40 max-w-[90vw] transition-all duration-300 select-none">
         {!isExpanded ? (
           // Compact Mini Pill / Badge
           <div className="flex items-center gap-2 bg-[#fdfbf7]/95 backdrop-blur-md border border-[#ecd9c6] rounded-full p-1.5 pr-3 shadow-lg hover:shadow-xl transition-all hover:scale-105 group">
-            {/* Spinning Vinyl Button */}
+            {/* Spinning Vinyl Record Disc */}
             <button
               onClick={togglePlay}
-              className={`relative w-10 h-10 rounded-full flex items-center justify-center bg-[#2d221c] text-white shadow-sm overflow-hidden transition-all ${
-                isPlaying ? 'animate-spin-slow' : ''
-              }`}
-              title={isPlaying ? "หยุดเพลง" : "กดเปิดเพลง"}
+              className="relative p-0 border-0 bg-transparent cursor-pointer rounded-full"
+              title={isPlaying ? 'หยุดเพลง' : 'กดเปิดเพลง'}
               aria-label="Toggle play music"
             >
-              {/* Vinyl grooves */}
-              <div className="absolute inset-1 rounded-full border border-white/20 border-dashed pointer-events-none" />
-              <div className="absolute inset-2.5 rounded-full border border-white/10 pointer-events-none" />
-              <div className="w-3.5 h-3.5 rounded-full bg-scrapbook-pink-400 border border-white flex items-center justify-center">
-                <div className="w-1 h-1 rounded-full bg-white" />
-              </div>
+              <VinylDisc isPlaying={isPlaying} size="sm" coverUrl={musicData.albumCover} />
             </button>
 
             {/* Song Info & Quick Play */}
-            <div 
+            <div
               className="flex flex-col cursor-pointer max-w-[130px] sm:max-w-[160px]"
               onClick={() => setIsExpanded(true)}
             >
@@ -131,7 +188,7 @@ export const MusicPlayer: React.FC = () => {
                 )}
               </div>
               <span className="font-body text-[10px] text-scrapbook-brown-light truncate">
-                {isPlaying ? musicData.artist : 'แตะเพื่อเปิดเพลงคลอเบา ๆ ♡'}
+                {isPlaying ? musicData.artist : (musicData.floatingPrompt || 'แตะเพื่อเปิดเพลงคลอเบา ๆ ♡')}
               </span>
             </div>
 
@@ -139,7 +196,7 @@ export const MusicPlayer: React.FC = () => {
             <button
               onClick={togglePlay}
               className="w-7 h-7 rounded-full bg-scrapbook-pink-100 text-scrapbook-pink-600 flex items-center justify-center hover:bg-scrapbook-pink-200 transition-colors"
-              aria-label={isPlaying ? "Pause" : "Play"}
+              aria-label={isPlaying ? 'Pause' : 'Play'}
             >
               {isPlaying ? <Pause size={13} /> : <Play size={13} className="ml-0.5" />}
             </button>
@@ -161,7 +218,7 @@ export const MusicPlayer: React.FC = () => {
               <div className="flex items-center gap-1.5">
                 <Music size={14} className="text-scrapbook-pink-500" />
                 <span className="font-cute text-xs text-scrapbook-brown font-semibold">
-                  เครื่องเล่นเพลงความทรงจำ
+                  เครื่องเล่นแผ่นเสียงความทรงจำ
                 </span>
               </div>
               <button
@@ -172,25 +229,14 @@ export const MusicPlayer: React.FC = () => {
               </button>
             </div>
 
-            {/* Album Cover & Titles */}
+            {/* Vinyl Record Disc & Titles */}
             <div className="flex items-center gap-3.5 mb-3">
-              <div 
-                className={`w-14 h-14 rounded-full overflow-hidden shadow-md border-2 border-white flex-shrink-0 relative ${
-                  isPlaying ? 'animate-spin-slow' : ''
-                }`}
+              <div
+                className="cursor-pointer"
+                onClick={togglePlay}
+                title={isPlaying ? 'แตะเพื่อหยุดเพลง' : 'แตะเพื่อเล่นเพลง'}
               >
-                <img
-                  src={musicData.albumCover}
-                  alt={musicData.title}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // Fallback if image fails
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
-                />
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <div className="w-3.5 h-3.5 rounded-full bg-white border border-[#4a3a30]" />
-                </div>
+                <VinylDisc isPlaying={isPlaying} size="md" coverUrl={musicData.albumCover} />
               </div>
 
               <div className="flex-1 min-w-0">
@@ -257,7 +303,9 @@ export const MusicPlayer: React.FC = () => {
 
             {/* Small Hint for Sno */}
             <div className="mt-2.5 pt-2 border-t border-[#f4ece1] text-center font-body text-[11px] text-scrapbook-brown-light/80">
-              {isPlaying ? '♪ เพลงกำลังเล่นคลอเบา ๆ ให้บรรยากาศอบอุ่นขึ้นนะ' : 'แตะ "เปิดเพลงคลอ" เพื่อฟังเพลงเบา ๆ ไปพร้อมกับการอ่านนะ ♡'}
+              {isPlaying
+                ? '♪ แผ่นเสียงกำลังหมุนเล่นเพลงคลอเบา ๆ ให้บรรยากาศอบอุ่นขึ้นนะ'
+                : 'แตะ "เปิดเพลงคลอ" เพื่อฟังเพลงเบา ๆ ไปพร้อมกับการอ่านนะ ♡'}
             </div>
           </div>
         )}
