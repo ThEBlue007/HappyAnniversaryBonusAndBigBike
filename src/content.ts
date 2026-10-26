@@ -27,8 +27,10 @@ export const siteContent: SiteContent = {
   // 1. ข้อมูลทั่วไปและชื่อของทั้งคู่
   // -----------------------------------------------------------------------
   meta: {
-    title: 'Our Little Story ♡ — บลู & สโน',
-    description: 'A little story, made just for you ♡ มีเรื่องราวเล็ก ๆ ที่อยากให้สโนลองอ่านดูนะ 💌',
+    // ชื่อที่จะแสดงบนแท็บของเบราว์เซอร์ด้านบนสุด และหัวข้อตอนส่งลิงก์ใน LINE
+    title: 'Our Little Story ♡ — To สโน',
+    // คำอธิบายตัวอย่างที่จะขึ้นตอนส่งแชร์ลิงก์ให้สโนใน LINE / Messenger
+    description: 'A little story, made just for you ♡ มีเรื่องราวเล็ก ๆ ที่อยากให้สโนลองอ่านดูนะคะ 💌',
     anniversaryDate: 'Our Special Day',
   },
 
@@ -61,7 +63,7 @@ export const siteContent: SiteContent = {
   opening: {
     badge: 'A Little Surprise 💌',
     title: 'A little story, made just for you ♡',
-    subtitle: 'มีเรื่องราวเล็ก ๆ ที่อยากให้สโนลองอ่านดูนะ',
+    subtitle: 'มีเรื่องราวเล็ก ๆ ที่อยากให้สโนลองอ่านดูนะคะ 💌',
     envelopeNote: 'For Snow ♡',
     envelopeSubtitle: 'Our Little Storybook',
     buttonText: 'เริ่มเรื่องราวของเรากัน ♡',
@@ -221,7 +223,7 @@ export const siteContent: SiteContent = {
   finalScreen: {
     quoteEn: 'Our story is still being written... ♡',
     quoteTh: 'เรื่องราวของเรายังมีต่ออีกเยอะเลยนะ',
-    madeWithLove: 'Made with love by Blue, just for Sno ♡',
+    madeWithLove: 'Made with love by Blue, just for Snow ♡',
     replayButtonText: 'ดูเรื่องราวของเราอีกรอบ ↺',
   },
 };

@@ -49,6 +49,21 @@ export const App: React.FC = () => {
     setCurrentScene(0);
   };
 
+  // Sync browser tab title and meta description dynamically
+  useEffect(() => {
+    if (siteContent.meta?.title) {
+      document.title = siteContent.meta.title;
+    }
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle && siteContent.meta?.title) {
+      ogTitle.setAttribute('content', siteContent.meta.title);
+    }
+    const metaDesc = document.querySelector('meta[name="description"]') || document.querySelector('meta[property="og:description"]');
+    if (metaDesc && siteContent.meta?.description) {
+      metaDesc.setAttribute('content', siteContent.meta.description);
+    }
+  }, []);
+
   // Keyboard navigation (Arrow keys)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
