@@ -7,6 +7,7 @@ export interface MemoryItem {
   tapeColor?: 'pink' | 'yellow' | 'blue' | 'green' | 'peach';
   rotation?: number; // slight tilt in degrees, e.g. -2, 1.5, -1
   sticker?: 'heart' | 'sparkle' | 'flower' | 'camera' | 'star' | 'coffee';
+  buttonText?: string;
 }
 
 export interface LoveReason {
@@ -14,6 +15,20 @@ export interface LoveReason {
   text: string;
   icon?: string;
   color?: string;
+}
+
+export interface QuestionOption {
+  id: number;
+  text: string;
+  response: string;
+}
+
+export interface QuestionData {
+  badge: string;
+  intro: string;
+  question: string;
+  options: QuestionOption[];
+  buttonText: string;
 }
 
 export interface SiteContent {
@@ -49,9 +64,13 @@ export interface SiteContent {
   reasonsSection: {
     titleEn: string;
     titleTh: string;
+    subtitle: string;
+    buttonText: string;
     reasons: LoveReason[];
   };
+  questionSection: QuestionData;
   intermission: {
+    badge: string;
     quote1: string;
     quote2: string;
     buttonText: string;
@@ -61,16 +80,27 @@ export interface SiteContent {
     envelopeTitleTh: string;
     openButtonText: string;
     letterHeader: string; // "ถึงสโน ♡"
+    pages: string[][]; // Multi-page letter so text fits on mobile screen without scrolling
     paragraphs: string[];
-    cakeCluePrefix: string; // "แล้วก็... วันนี้ยังมีอะไรอีกนิดหน่อยที่เราเตรียมไว้ให้ด้วย"
-    cakeClue: string; // "สโนคะ หันไปลองเปิดลิ้นชักด้านหน้าดูหน่อยค่ะ 🎂🤍"
-    cakeClueSuffix: string; // "หวังว่าจะยิ้มตอนเห็นนะ"
+    nextPageButtonText: string;
+    proceedToClueButtonText: string;
+    cakeCluePrefix?: string;
+    cakeClue?: string;
+    cakeClueSuffix?: string;
     loveNote: string; // "รักสโนนะ ♡"
     signOff: string; // "จากบลู"
+  };
+  finalReveal: {
+    badge: string;
+    prefix: string; // "แล้วก็... วันนี้ยังมีอะไรอีกนิดหน่อยที่เราเตรียมไว้ให้ด้วย"
+    cakeClue: string; // "สโนคะ หันไปลองเปิดลิ้นชักด้านหน้าดูหน่อยค่ะ 🎂🤍"
+    suffix: string; // "หวังว่าจะยิ้มตอนเห็นนะ ♡"
+    buttonText: string; // "จบเรื่องราวของวันนี้ 💗"
   };
   finalScreen: {
     quoteEn: string;
     quoteTh: string;
     madeWithLove: string;
+    replayButtonText: string;
   };
 }
