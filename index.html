@@ -1,27 +1,2276 @@
 <!doctype html>
 <html lang="th">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
-    <meta name="theme-color" content="#faf4ea" />
-    <title>กดเข้ามาดูเร็วสิอ้วนนน — </title>
-    
-    <!-- Open Graph for sharing on LINE, Facebook, Messenger -->
-    <meta property="og:title" content="กดเข้ามาดูเร็วสิอ้วนนน" />
-    <meta property="og:description" content="กดเข้ามาดูเร็วสิอ้วนนน" />
-    <meta name="description" content="กดเข้ามาดูเร็วสิอ้วนนน" />
-    <meta property="og:type" content="website" />
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Bike & Bonus 💗 | Our Little Story</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Nunito:wght@600;700;800;900&family=Mali:ital,wght@0,400;0,600;0,700;1,400&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
-    <!-- Cute Heart Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💌</text></svg>">
+  <style>
+    :root {
+      --pink: #f0b9e5;
+      --pink-dark: #eb67f2;
+      --pink-soft: #fdf2f8;
+      --pink-badge: #ffe4f3;
+      --pink-btn: #f472b6;
+      --pink-btn-hover: #ec4899;
+      --pale: #fbf5fc;
+      --line: #ffb4e1;
+      --brown-dark: #4a2835;
+      --brown-text: #6b3e4e;
+      --brown-light: #946b7a;
+      --shadow-soft: 0 10px 30px rgba(235, 103, 242, 0.12);
+      --shadow-card: 0 14px 34px rgba(220, 110, 190, 0.15);
+    }
 
-    <!-- Romantic Google Fonts (Mali, Itim, Caveat, Playfair Display) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Itim&family=Mali:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-scrapbook-pattern antialiased selection:bg-scrapbook-pink-200 selection:text-scrapbook-brown-dark">
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+      font-family: 'Kanit', sans-serif;
+      background-color: var(--pale);
+      color: var(--brown-text);
+      user-select: none;
+    }
+
+    /* Subtle background grid pattern */
+    body {
+      background-image: 
+        radial-gradient(#f3c5ea 1.2px, transparent 1.2px), 
+        radial-gradient(#f3c5ea 1.2px, var(--pale) 1.2px);
+      background-size: 28px 28px;
+      background-position: 0 0, 14px 14px;
+    }
+
+    /* Fixed decorative floating layer (Hearts & Pigs) */
+    #bg-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .floating-item {
+      position: absolute;
+      bottom: -70px;
+      pointer-events: none;
+      animation: floatUpAnim 8.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      opacity: 0;
+    }
+
+    .floating-heart {
+      color: #f472b6;
+      font-size: 24px;
+    }
+
+    .floating-pig {
+      width: 44px;
+      height: 44px;
+      filter: drop-shadow(0 4px 8px rgba(236, 72, 153, 0.25));
+    }
+
+    @keyframes floatUpAnim {
+      0% {
+        transform: translateY(0) scale(0.65) rotate(-5deg);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.85;
+      }
+      80% {
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(calc(-100vh - 120px)) scale(1.1) rotate(20deg);
+        opacity: 0;
+      }
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       4 CORNER ORCHIDS & WOODEN ROOT FRAME EFFECT (10-SEC BURST)
+       ══════════════════════════════════════════════════════════════ */
+    #orchid-root-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+      display: none;
+    }
+
+    #orchid-root-overlay.active {
+      display: block;
+      opacity: 1;
+    }
+
+    #orchid-root-overlay.fade-out {
+      opacity: 0;
+    }
+
+    /* Botanical Root Border around screen edges */
+    .root-border-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* Corner Orchids */
+    .corner-orchid {
+      position: absolute;
+      width: clamp(110px, 20vw, 175px);
+      height: clamp(110px, 20vw, 175px);
+      filter: drop-shadow(0 6px 16px rgba(180, 50, 90, 0.35));
+      animation: cornerBloom 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .corner-orchid-tl {
+      top: -10px;
+      left: -10px;
+      transform-origin: top left;
+    }
+
+    .corner-orchid-tr {
+      top: -10px;
+      right: -10px;
+      transform-origin: top right;
+      transform: scaleX(-1);
+    }
+
+    .corner-orchid-bl {
+      bottom: -10px;
+      left: -10px;
+      transform-origin: bottom left;
+      transform: scaleY(-1);
+    }
+
+    .corner-orchid-br {
+      bottom: -10px;
+      right: -10px;
+      transform-origin: bottom right;
+      transform: scale(-1);
+    }
+
+    @keyframes cornerBloom {
+      0% { transform: scale(0.2) rotate(-25deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    /* Fixed top navigation */
+    #top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 58px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 180, 225, 0.45);
+      transition: all 0.3s ease;
+    }
+
+    #top-nav.hidden {
+      display: none !important;
+    }
+
+    .nav-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: #fff0f7;
+      border: 1.5px solid #f9a8d4;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #be185d;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .nav-back-btn:hover {
+      background: #fce7f3;
+      transform: translateX(-2px);
+    }
+
+    .nav-progress {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-dot {
+      display: inline-block;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #fbcfe8;
+      transition: all 0.3s;
+    }
+
+    .nav-dot.active {
+      background: #ec4899;
+      transform: scale(1.35);
+      box-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
+    }
+
+    .nav-title {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      color: #be185d;
+      letter-spacing: 0.5px;
+    }
+
+    /* App container */
+    #app {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 70px 16px 85px 16px;
+    }
+
+    /* Slide container */
+    .slide {
+      display: none;
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      animation: slideIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(18px) scale(0.97);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Card styling */
+    .card {
+      background: #ffffff;
+      border-radius: 36px;
+      border: 3.5px solid var(--line);
+      box-shadow: var(--shadow-card);
+      padding: 28px 24px;
+      position: relative;
+      text-align: center;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 20px 16px;
+        border-radius: 28px;
+        border-width: 2.5px;
+      }
+    }
+
+    /* Badges & Pills */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--pink-badge);
+      border: 1px solid #f9a8d4;
+      color: #be185d;
+      padding: 6px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(249, 168, 212, 0.25);
+    }
+
+    .pill-title {
+      background: linear-gradient(135deg, #f472b6, #ec4899);
+      border-radius: 999px;
+      color: white;
+      text-align: center;
+      padding: 12px 20px;
+      font-weight: 800;
+      font-size: clamp(16px, 3vw, 22px);
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 14px rgba(236, 72, 153, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .hearts-divider {
+      text-align: center;
+      letter-spacing: 7px;
+      font-size: 18px;
+      color: #f472b6;
+      margin: 14px 0;
+      opacity: 0.85;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    /* Primary Pill Button */
+    .btn-pink {
+      border: 0;
+      background: linear-gradient(135deg, #f472b6, #ec4899);
+      color: white;
+      border-radius: 999px;
+      padding: 13px 26px;
+      font-family: 'Kanit', sans-serif;
+      font-size: clamp(15px, 2.5vw, 18px);
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(236, 72, 153, 0.35);
+      transition: all 0.22s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .btn-pink:hover {
+      background: linear-gradient(135deg, #ec4899, #db2777);
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 8px 22px rgba(236, 72, 153, 0.45);
+    }
+
+    .btn-pink:active {
+      transform: scale(0.97);
+    }
+
+    .btn-pink.full-width {
+      width: 100%;
+    }
+
+    /* ─── SLIDE 0: PASSWORD GATE WITH VIDEO ─── */
+    .gate-layout {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 26px;
+      margin-top: 10px;
+    }
+
+    .gate-video-wrapper {
+      width: min(44%, 260px);
+      aspect-ratio: 0.82;
+      border-radius: 32px;
+      border: 6px dashed #f9a8d4;
+      box-shadow: 0 8px 20px rgba(244, 114, 182, 0.25);
+      overflow: hidden;
+      background: #000;
+    }
+
+    .gate-cover-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .keypad {
+      width: min(54%, 310px);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .keypad-display {
+      grid-column: 1 / -1;
+      min-height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #fbcfe8, #f472b6);
+      border-radius: 999px;
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      letter-spacing: 4px;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.08);
+      margin-bottom: 4px;
+    }
+
+    .key-btn {
+      border: 0;
+      background: #fdf2f8;
+      color: #be185d;
+      border: 1.5px solid #fbcfe8;
+      border-radius: 999px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 10px 0;
+      cursor: pointer;
+      box-shadow: 0 3px 8px rgba(244, 114, 182, 0.15);
+      transition: all 0.14s;
+    }
+
+    .key-btn:hover {
+      background: #fce7f3;
+      transform: translateY(-2px);
+    }
+
+    .key-btn:active {
+      transform: scale(0.92);
+      background: #f472b6;
+      color: white;
+    }
+
+    .keypad-notice {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 13.5px;
+      color: #db2777;
+      min-height: 22px;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .gate-layout {
+        flex-direction: column;
+        gap: 16px;
+      }
+      .gate-video-wrapper {
+        width: 170px;
+        border-width: 4px;
+        border-radius: 22px;
+      }
+      .keypad {
+        width: 100%;
+        max-width: 280px;
+      }
+    }
+
+    /* ─── SLIDE 1: COUNTER (WITH PIG AVATAR & SECONDS) ─── */
+    .counter-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .counter-avatar-pig {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      border: 4px solid #f472b6;
+      box-shadow: 0 4px 14px rgba(244, 114, 182, 0.35);
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .counter-header .pill-title {
+      margin-bottom: 0;
+      flex: 1;
+      padding: 10px 16px;
+      font-size: clamp(14px, 2.8vw, 19px);
+    }
+
+    .clock-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin: 18px 0;
+    }
+
+    .clock-box {
+      background: #fff5fa;
+      border: 2px solid #fbcfe8;
+      border-radius: 18px;
+      padding: 10px 4px;
+      box-shadow: 0 4px 12px rgba(244, 114, 182, 0.12);
+    }
+
+    .clock-num {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(24px, 5.5vw, 42px);
+      line-height: 1.1;
+      color: #ec4899;
+    }
+
+    .clock-unit {
+      font-size: clamp(11px, 2.2vw, 14px);
+      font-weight: 700;
+      color: #9d174d;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    .counter-lockline {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 900;
+      font-size: clamp(16px, 3.2vw, 24px);
+      letter-spacing: 1px;
+      margin-top: 10px;
+    }
+
+    /* ─── SLIDE 2: VIDEO GRID (4 CLIPS: 1, 5, 3, 4) ─── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin: 18px 0;
+    }
+
+    .video-grid-item {
+      position: relative;
+      border-radius: 22px;
+      overflow: hidden;
+      border: 4px solid #f9a8d4;
+      aspect-ratio: 1;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(244, 114, 182, 0.22);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      background: #000000;
+    }
+
+    .video-grid-item:hover {
+      transform: scale(1.03) translateY(-3px);
+      box-shadow: 0 10px 24px rgba(244, 114, 182, 0.35);
+    }
+
+    .video-grid-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      pointer-events: none;
+    }
+
+    .video-grid-tag {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 999px;
+      padding: 3px 9px;
+      font-size: 11px;
+      color: #ec4899;
+      font-weight: 800;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    .video-play-hint {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background: rgba(0, 0, 0, 0.65);
+      color: white;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 10px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      backdrop-filter: blur(4px);
+    }
+
+    /* ─── SLIDE 3: QUESTION BOX WITH 3 LITTLE PIGS ─── */
+    .question-wrapper {
+      position: relative;
+      margin-top: 36px;
+      margin-bottom: 24px;
+    }
+
+    .question-card {
+      background: #ffffff;
+      border: 3.5px solid #fce7f3;
+      outline: 2px solid #f9a8d4;
+      border-radius: 34px;
+      padding: 24px 20px 20px 20px;
+      position: relative;
+      box-shadow: 0 16px 36px rgba(236, 72, 153, 0.12);
+      z-index: 5;
+    }
+
+    .question-textarea-wrapper {
+      position: relative;
+      margin-top: 4px;
+    }
+
+    .question-textarea {
+      width: 100%;
+      min-height: 160px;
+      border: 0;
+      outline: none;
+      resize: vertical;
+      font-family: 'Mali', 'Kanit', sans-serif;
+      font-size: 15.5px;
+      line-height: 1.7;
+      color: #581c87;
+      background: transparent;
+      padding: 6px 4px;
+    }
+
+    .question-textarea::placeholder {
+      color: #a78bfa;
+      opacity: 0.65;
+    }
+
+    .question-card-divider {
+      height: 1.5px;
+      background: #fdf2f8;
+      border-bottom: 1.5px solid #fce7f3;
+      margin: 12px 0 14px 0;
+    }
+
+    .question-footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .question-hint-left {
+      font-family: 'Mali', sans-serif;
+      font-size: 13.5px;
+      color: #b08196;
+    }
+
+    .btn-send-mini {
+      background: linear-gradient(135deg, #f472b6, #ec4899);
+      color: white;
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-family: 'Kanit', sans-serif;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 3px 10px rgba(244, 114, 182, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-send-mini:hover {
+      transform: scale(1.04);
+      background: linear-gradient(135deg, #ec4899, #db2777);
+    }
+
+    /* 3 Little Pigs */
+    .pig-tl {
+      position: absolute;
+      top: -46px;
+      left: -18px;
+      width: 88px;
+      height: 88px;
+      z-index: 10;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 12px rgba(236, 72, 153, 0.25));
+      animation: gentleWiggle 4s ease-in-out infinite;
+    }
+
+    .pig-tr {
+      position: absolute;
+      top: -48px;
+      right: -16px;
+      width: 90px;
+      height: 90px;
+      z-index: 10;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 12px rgba(236, 72, 153, 0.25));
+      animation: gentleWiggle 4.5s ease-in-out infinite 0.5s;
+    }
+
+    .pig-bl {
+      position: absolute;
+      bottom: -32px;
+      left: -16px;
+      width: 82px;
+      height: 82px;
+      z-index: 10;
+      pointer-events: none;
+      filter: drop-shadow(0 6px 12px rgba(236, 72, 153, 0.25));
+      animation: gentleBounce 3.8s ease-in-out infinite 1s;
+    }
+
+    @keyframes gentleWiggle {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(3.5deg) translateY(-2px); }
+    }
+
+    @keyframes gentleBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px) scale(1.02); }
+    }
+
+    .answer-saved-box {
+      margin-top: 14px;
+      background: #fdf2f8;
+      border: 2px dashed #f472b6;
+      border-radius: 20px;
+      padding: 14px;
+      font-size: 14px;
+      color: #be185d;
+    }
+
+    /* ─── SLIDE 4: NOTE BEFORE END (SCENE 7) ─── */
+    .note-card {
+      background: #fffdfa;
+      border: 3px solid #f9dbe6;
+      border-radius: 36px;
+      padding: 34px 24px;
+      position: relative;
+      box-shadow: 0 16px 36px rgba(244, 114, 182, 0.15);
+    }
+
+    .note-quote1 {
+      font-family: 'Mali', sans-serif;
+      font-size: clamp(16px, 2.7vw, 19px);
+      line-height: 1.85;
+      color: #4a2835;
+      margin: 18px 0;
+    }
+
+    .note-quote2 {
+      font-family: 'Mali', sans-serif;
+      font-size: clamp(17px, 2.9vw, 21px);
+      font-weight: 700;
+      line-height: 1.8;
+      color: #db2777;
+      margin: 16px 0;
+    }
+
+    /* ─── SLIDE 5: FINAL LETTER (SCENE 8) ─── */
+    .envelope-interactive {
+      position: relative;
+      width: min(100%, 340px);
+      height: 220px;
+      margin: 20px auto;
+      background: #fdf8f4;
+      border-radius: 22px;
+      border: 2px solid #ecd8c2;
+      box-shadow: 0 14px 34px rgba(180, 110, 80, 0.18);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .envelope-interactive:hover {
+      transform: scale(1.03) translateY(-3px);
+    }
+
+    .envelope-ribbon-v {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 28px;
+      background: #ffd6e0;
+      border-left: 1px dashed #f9a8d4;
+      border-right: 1px dashed #f9a8d4;
+      z-index: 2;
+    }
+
+    .envelope-ribbon-h {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 28px;
+      background: #ffd6e0;
+      border-top: 1px dashed #f9a8d4;
+      border-bottom: 1px dashed #f9a8d4;
+      z-index: 2;
+    }
+
+    .envelope-wax-seal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ec4899, #be185d);
+      box-shadow: 0 6px 14px rgba(190, 24, 93, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      z-index: 5;
+      transition: transform 0.25s ease;
+    }
+
+    .envelope-interactive:hover .envelope-wax-seal {
+      transform: translate(-50%, -50%) scale(1.12);
+    }
+
+    .letter-paper {
+      background: #fffbfa;
+      border: 2px dashed #f472b6;
+      border-radius: 28px;
+      padding: 26px 20px;
+      margin-top: 18px;
+      text-align: left;
+      font-family: 'Mali', sans-serif;
+      box-shadow: inset 0 0 16px rgba(244, 114, 182, 0.08);
+      position: relative;
+    }
+
+    .letter-title {
+      font-weight: 700;
+      font-size: 20px;
+      color: #be185d;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .letter-body p {
+      font-size: 15.5px;
+      line-height: 2.1;
+      color: #4a2835;
+      margin-bottom: 12px;
+      letter-spacing: 0.3px;
+    }
+
+    .letter-signoff {
+      text-align: right;
+      font-family: 'Caveat', cursive;
+      font-size: 22px;
+      color: #ec4899;
+      margin-top: 18px;
+      font-weight: 700;
+    }
+
+    /* ─── SLIDE 6: SURPRISE REVEAL (SCENE 9) ─── */
+    .gift-interactive {
+      width: 170px;
+      height: 170px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #ffc2df, #f472b6);
+      border-radius: 28px;
+      position: relative;
+      box-shadow: 0 16px 36px rgba(244, 114, 182, 0.35);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #ffffff;
+      transition: all 0.28s ease;
+    }
+
+    .gift-interactive:hover {
+      transform: scale(1.06) rotate(2deg);
+      box-shadow: 0 20px 42px rgba(244, 114, 182, 0.45);
+    }
+
+    .gift-ribbon-v {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 24px;
+      background: #fef08a;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    }
+
+    .gift-ribbon-h {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 24px;
+      background: #fef08a;
+      box-shadow: 0 0 6px rgba(0,0,0,0.1);
+    }
+
+    .gift-bow {
+      position: absolute;
+      top: -18px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 38px;
+      z-index: 5;
+    }
+
+    .orchid-container {
+      width: 220px;
+      height: 220px;
+      margin: 10px auto;
+      animation: bloomIn 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes bloomIn {
+      0% { transform: scale(0.4) rotate(-10deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    .surprise-text-box {
+      background: #fff5fa;
+      border: 2px dashed #f472b6;
+      border-radius: 24px;
+      padding: 18px;
+      margin-top: 14px;
+    }
+
+    .surprise-clue {
+      font-size: 18px;
+      font-weight: 700;
+      color: #be185d;
+      margin: 8px 0;
+    }
+
+    /* ─── SLIDE 7: FINAL SCREEN (SCENE 10) ─── */
+    .final-quote-en {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(28px, 6vw, 42px);
+      color: #be185d;
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .final-quote-th {
+      font-family: 'Kanit', sans-serif;
+      font-size: clamp(16px, 3.2vw, 21px);
+      color: #4a2835;
+      margin-bottom: 18px;
+      font-weight: 500;
+    }
+
+    .final-credits {
+      font-family: 'Mali', sans-serif;
+      font-size: 15px;
+      color: #ec4899;
+      margin: 16px 0;
+    }
+
+    /* ─── FLOATING MUSIC PLAYER (VINYL) ─── */
+    #music-player-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 2px solid #f9a8d4;
+      border-radius: 999px;
+      padding: 6px 14px 6px 6px;
+      box-shadow: 0 10px 28px rgba(236, 72, 153, 0.28);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    #music-player-widget:hover {
+      transform: scale(1.04);
+      background: #ffffff;
+      box-shadow: 0 12px 32px rgba(236, 72, 153, 0.38);
+    }
+
+    .vinyl-disc {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #f472b6 22%, #be185d 24%, #1f1f2e 28%, #2b2b3d 50%, #171722 75%, #0d0d15 100%);
+      border: 2px solid #ffffff;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: spinVinyl 5s linear infinite;
+      animation-play-state: paused;
+    }
+
+    .vinyl-disc.playing {
+      animation-play-state: running;
+    }
+
+    .vinyl-center-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid #f472b6;
+    }
+
+    @keyframes spinVinyl {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .music-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .music-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #be185d;
+      white-space: nowrap;
+    }
+
+    .music-status {
+      font-size: 10px;
+      color: #9d174d;
+      opacity: 0.8;
+    }
+
+    /* Video Fullscreen Modal */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(30, 8, 22, 0.88);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      position: relative;
+      width: min(92vw, 560px);
+      background: #000;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 5px solid #f9a8d4;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+      transform: scale(0.92);
+      transition: transform 0.25s ease;
+    }
+
+    .modal.active .modal-content {
+      transform: scale(1);
+    }
+
+    .modal-content video {
+      width: 100%;
+      max-height: 75vh;
+      display: block;
+      object-fit: contain;
+    }
+
+    .modal-controls {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      display: flex;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .modal-btn {
+      background: rgba(255, 255, 255, 0.92);
+      border: 0;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-size: 16px;
+      color: #be185d;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+
+    .modal-btn:hover {
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background decorative floating layer (Hearts & Cute Pigs) -->
+  <div id="bg-layer"></div>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- 10-SECOND 4-CORNER ORCHIDS & WOODEN ROOT FRAME OVERLAY -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div id="orchid-root-overlay">
+    <!-- Botanical Root Frame Border -->
+    <svg class="root-border-svg" viewBox="0 0 1000 1000" preserveAspectRatio="none" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="rootGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#4a2511"/>
+          <stop offset="50%" stop-color="#783c1d"/>
+          <stop offset="100%" stop-color="#4a2511"/>
+        </linearGradient>
+      </defs>
+      <!-- Top edge roots -->
+      <path d="M 0 12 Q 250 35 500 10 T 1000 15" stroke="url(#rootGrad)" stroke-width="12" stroke-linecap="round"/>
+      <path d="M 100 18 Q 300 45 420 18" stroke="url(#rootGrad)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M 580 16 Q 750 48 900 16" stroke="url(#rootGrad)" stroke-width="5" stroke-linecap="round"/>
+      <!-- Bottom edge roots -->
+      <path d="M 0 988 Q 300 965 500 990 T 1000 985" stroke="url(#rootGrad)" stroke-width="12" stroke-linecap="round"/>
+      <path d="M 80 980 Q 250 955 380 982" stroke="url(#rootGrad)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M 600 982 Q 780 950 920 980" stroke="url(#rootGrad)" stroke-width="5" stroke-linecap="round"/>
+      <!-- Left edge roots -->
+      <path d="M 12 0 Q 35 250 10 500 T 15 1000" stroke="url(#rootGrad)" stroke-width="12" stroke-linecap="round"/>
+      <path d="M 18 150 Q 42 320 16 450" stroke="url(#rootGrad)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M 16 600 Q 46 760 18 900" stroke="url(#rootGrad)" stroke-width="5" stroke-linecap="round"/>
+      <!-- Right edge roots -->
+      <path d="M 988 0 Q 965 300 990 500 T 985 1000" stroke="url(#rootGrad)" stroke-width="12" stroke-linecap="round"/>
+      <path d="M 982 120 Q 955 280 984 420" stroke="url(#rootGrad)" stroke-width="5" stroke-linecap="round"/>
+      <path d="M 984 580 Q 950 740 982 880" stroke="url(#rootGrad)" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+
+    <!-- Corner 1: Top-Left Orchid -->
+    <div class="corner-orchid corner-orchid-tl">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 20 Q60 50 110 30" stroke="#4d7c0f" stroke-width="5" stroke-linecap="round"/>
+        <!-- Dorsal Sepal -->
+        <path d="M60 40 C50 15 80 5 95 25 C100 45 75 55 60 40 Z" fill="#ffffff" stroke="#f472b6" stroke-width="2"/>
+        <!-- Left Wing Petal -->
+        <path d="M55 45 C20 30 15 65 35 85 C55 95 70 70 55 45 Z" fill="#fff5f8" stroke="#ec4899" stroke-width="2"/>
+        <!-- Right Wing Petal -->
+        <path d="M70 45 C105 30 115 65 95 85 C75 95 60 70 70 45 Z" fill="#fff5f8" stroke="#ec4899" stroke-width="2"/>
+        <!-- Lower Sepals -->
+        <path d="M48 65 C30 95 55 125 70 105 Z" fill="#ffffff" stroke="#f472b6" stroke-width="1.8"/>
+        <path d="M78 65 C95 95 70 125 55 105 Z" fill="#ffffff" stroke="#f472b6" stroke-width="1.8"/>
+        <!-- Magenta Lip Center -->
+        <path d="M62 55 C52 65 52 82 62 90 C72 82 72 65 62 55 Z" fill="#e11d48"/>
+        <circle cx="62" cy="68" r="4" fill="#fef08a"/>
+      </svg>
+    </div>
+
+    <!-- Corner 2: Top-Right Orchid -->
+    <div class="corner-orchid corner-orchid-tr">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 20 Q60 50 110 30" stroke="#4d7c0f" stroke-width="5" stroke-linecap="round"/>
+        <path d="M60 40 C50 15 80 5 95 25 C100 45 75 55 60 40 Z" fill="#ffffff" stroke="#f472b6" stroke-width="2"/>
+        <path d="M55 45 C20 30 15 65 35 85 C55 95 70 70 55 45 Z" fill="#fff5f8" stroke="#ec4899" stroke-width="2"/>
+        <path d="M70 45 C105 30 115 65 95 85 C75 95 60 70 70 45 Z" fill="#fff5f8" stroke="#ec4899" stroke-width="2"/>
+        <path d="M48 65 C30 95 55 125 70 105 Z" fill="#ffffff" stroke="#f472b6" stroke-width="1.8"/>
+        <path d="M78 65 C95 95 70 125 55 105 Z" fill="#ffffff" stroke="#f472b6" stroke-width="1.8"/>
+        <path d="M62 55 C52 65 52 82 62 90 C72 82 72 65 62 55 Z" fill="#e11d48"/>
+        <circle cx="62" cy="68" r="4" fill="#fef08a"/>
+      </svg>
+    </div>
+
+    <!-- Corner 3: Bottom-Left Orchid -->
+    <div class="corner-orchid corner-orchid-bl">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 20 Q60 50 110 30" stroke="#4d7c0f" stroke-width="5" stroke-linecap="round"/>
+        <path d="M60 40 C50 15 80 5 95 25 C100 45 75 55 60 40 Z" fill="#ffffff" stroke="#f472b6" stroke-width="2"/>
+        <path d="M55 45 C20 30 15 65 35 85 C55 95 70 70 55 45 Z" fill="#fff5f8" stroke="#ec4899" stroke-width="2"/>
+        <path d="M70 45 C105 30 115 65 95 85 C75 95 60 70 70 45 Z" fill="#fff5f8" stroke="#ec4899" stroke-width="2"/>
+        <path d="M48 65 C30 95 55 125 70 105 Z" fill="#ffffff" stroke="#f472b6" stroke-width="1.8"/>
+        <path d="M78 65 C95 95 70 125 55 105 Z" fill="#ffffff" stroke="#f472b6" stroke-width="1.8"/>
+        <path d="M62 55 C52 65 52 82 62 90 C72 82 72 65 62 55 Z" fill="#e11d48"/>
+        <circle cx="62" cy="68" r="4" fill="#fef08a"/>
+      </svg>
+    </div>
+
+    <!-- Corner 4: Bottom-Right Orchid -->
+    <div class="corner-orchid corner-orchid-br">
+      <svg viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 20 Q60 50 110 30" stroke="#4d7c0f" stroke-width="5" stroke-linecap="round"/>
+        <path d="M60 40 C50 15 80 5 95 25 C100 45 75 55 60 40 Z" fill="#ffffff" stroke="#f472b6" stroke-width="2"/>
+        <path d="M55 45 C20 30 15 65 35 85 C55 95 70 70 55 45 Z" fill="#fff5f8" stroke="#ec4899" stroke-width="2"/>
+        <path d="M70 45 C105 30 115 65 95 85 C75 95 60 70 70 45 Z" fill="#fff5f8" stroke="#ec4899" stroke-width="2"/>
+        <path d="M48 65 C30 95 55 125 70 105 Z" fill="#ffffff" stroke="#f472b6" stroke-width="1.8"/>
+        <path d="M78 65 C95 95 70 125 55 105 Z" fill="#ffffff" stroke="#f472b6" stroke-width="1.8"/>
+        <path d="M62 55 C52 65 52 82 62 90 C72 82 72 65 62 55 Z" fill="#e11d48"/>
+        <circle cx="62" cy="68" r="4" fill="#fef08a"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Top Navigation Bar (Visible on slides 1-7) -->
+  <nav id="top-nav" class="hidden">
+    <button class="nav-back-btn" id="navBackBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      <span>ย้อนกลับ</span>
+    </button>
+    <div class="nav-title">BIKE & BONUS 💗</div>
+    <div class="nav-progress" id="navProgressDots"></div>
+  </nav>
+
+  <!-- Main Slides View -->
+  <main id="app">
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 0: PASSWORD GATE (WITH VIDEO & PASSWORD 051168) -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <section class="slide active" id="slide-0">
+      <div class="card">
+        <div class="pill-title">ใบ้ว่าวันที่เค้าได้บอกรักเธอแบบเต็มปากครั้งแรก</div>
+        
+        <div class="gate-layout">
+          <!-- Video Frame replacing cover image -->
+          <div class="gate-video-wrapper">
+            <video class="gate-cover-video" src="assets/814961443.120248.mp4" autoplay loop muted playsinline webkit-playsinline></video>
+          </div>
+          
+          <div class="keypad">
+            <div class="keypad-display" id="gateDisplay">Enter Password</div>
+            <button class="key-btn" data-key="1">1</button>
+            <button class="key-btn" data-key="2">2</button>
+            <button class="key-btn" data-key="3">3</button>
+            <button class="key-btn" data-key="4">4</button>
+            <button class="key-btn" data-key="5">5</button>
+            <button class="key-btn" data-key="6">6</button>
+            <button class="key-btn" data-key="7">7</button>
+            <button class="key-btn" data-key="8">8</button>
+            <button class="key-btn" data-key="9">9</button>
+            <button class="key-btn" data-key="clear">*</button>
+            <button class="key-btn" data-key="0">0</button>
+            <button class="key-btn" data-key="enter">♥</button>
+            <!-- (51168) removed as requested -->
+            <div class="keypad-notice" id="gateNotice">กดตัวเลขเพื่อใส่รหัส 💗</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 1: ANNIVERSARY COUNTER (WITH PIG AVATAR & LIVE SECONDS) -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <section class="slide" id="slide-1">
+      <div class="card">
+        <div class="counter-header">
+          <!-- Cute Pig Avatar inside circle -->
+          <div class="counter-avatar-pig">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+              <circle cx="50" cy="50" r="48" fill="#fff0f7"/>
+              <ellipse cx="50" cy="52" rx="34" ry="30" fill="#ffb4d6" stroke="#f472b6" stroke-width="2.5"/>
+              <!-- Ears -->
+              <path d="M24 32 C16 16 32 14 38 25 Z" fill="#f472b6" stroke="#db2777" stroke-width="2"/>
+              <path d="M76 32 C84 16 68 14 62 25 Z" fill="#f472b6" stroke="#db2777" stroke-width="2"/>
+              <!-- Eyes with sparkles -->
+              <circle cx="38" cy="46" r="3.6" fill="#4a2835"/>
+              <circle cx="39.5" cy="44.5" r="1.3" fill="#ffffff"/>
+              <circle cx="62" cy="46" r="3.6" fill="#4a2835"/>
+              <circle cx="63.5" cy="44.5" r="1.3" fill="#ffffff"/>
+              <!-- Rosy blush -->
+              <circle cx="30" cy="54" r="5.5" fill="#ff70a6" opacity="0.6"/>
+              <circle cx="70" cy="54" r="5.5" fill="#ff70a6" opacity="0.6"/>
+              <!-- Snout -->
+              <ellipse cx="50" cy="56" rx="12" ry="9" fill="#ff85b8" stroke="#db2777" stroke-width="2"/>
+              <ellipse cx="46" cy="56" rx="2" ry="2.6" fill="#881337"/>
+              <ellipse cx="54" cy="56" rx="2" ry="2.6" fill="#881337"/>
+            </svg>
+          </div>
+          <div class="pill-title">How long we have been together ♥</div>
+        </div>
+
+        <!-- 5 Clock boxes: Wks, Days, Hrs, Mins, Secs (Real-time live tick) -->
+        <div class="clock-grid">
+          <div class="clock-box">
+            <div class="clock-num" id="weeks">00</div>
+            <div class="clock-unit">Wks</div>
+          </div>
+          <div class="clock-box">
+            <div class="clock-num" id="days">00</div>
+            <div class="clock-unit">Days</div>
+          </div>
+          <div class="clock-box">
+            <div class="clock-num" id="hours">00</div>
+            <div class="clock-unit">Hrs</div>
+          </div>
+          <div class="clock-box">
+            <div class="clock-num" id="mins">00</div>
+            <div class="clock-unit">Mins</div>
+          </div>
+          <div class="clock-box">
+            <div class="clock-num" id="secs">00</div>
+            <div class="clock-unit">Secs</div>
+          </div>
+        </div>
+
+        <div class="pill-title counter-lockline">▣ &nbsp; BIKE & BONUS</div>
+        <div class="hearts-divider">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+        <p style="font-size:15px;color:#9d174d;font-family:'Mali',sans-serif;margin:8px 0 16px 0;">
+          นับตั้งแต่ 5 พ.ย. 68 เวลา 18:23 น. ทุกวินาทีมีค่าเมื่อมีเธอ 💖
+        </p>
+
+        <button class="btn-pink full-width" onclick="goToSlide(2)">
+          <span>ไปดูวิดีโอความทรงจำของเรากัน ♡</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 2: VIDEO GRID (4 CLIPS: 1, 5, 3, 4 AUTOPLAYING) -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <section class="slide" id="slide-2">
+      <div class="card">
+        <div class="pill-title">YOU & ME ♧ (Our Videos)</div>
+        <div class="hearts-divider">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+        <!-- 4 Grid Slots with autoplaying muted videos -->
+        <div class="video-grid">
+          <!-- Clip 1 -->
+          <div class="video-grid-item" onclick="openVideoModal('assets/clip1.mp4', 'คริปที่ 1 🌸')">
+            <video src="assets/clip1.mp4" autoplay loop muted playsinline webkit-playsinline></video>
+            <div class="video-grid-tag">คริป 1 🌸</div>
+            <div class="video-play-hint">🔍 แตะดูเต็มจอ</div>
+          </div>
+          <!-- Clip 5 -->
+          <div class="video-grid-item" onclick="openVideoModal('assets/clip5.mp4', 'คริปที่ 5 ✨')">
+            <video src="assets/clip5.mp4" autoplay loop muted playsinline webkit-playsinline></video>
+            <div class="video-grid-tag">คริป 5 ✨</div>
+            <div class="video-play-hint">🔍 แตะดูเต็มจอ</div>
+          </div>
+          <!-- Clip 3 -->
+          <div class="video-grid-item" onclick="openVideoModal('assets/clip3.mp4', 'คริปที่ 3 🌷')">
+            <video src="assets/clip3.mp4" autoplay loop muted playsinline webkit-playsinline></video>
+            <div class="video-grid-tag">คริป 3 🌷</div>
+            <div class="video-play-hint">🔍 แตะดูเต็มจอ</div>
+          </div>
+          <!-- Clip 4 -->
+          <div class="video-grid-item" onclick="openVideoModal('assets/clip4.mp4', 'คริปที่ 4 🍨')">
+            <video src="assets/clip4.mp4" autoplay loop muted playsinline webkit-playsinline></video>
+            <div class="video-grid-tag">คริป 4 🍨</div>
+            <div class="video-play-hint">🔍 แตะดูเต็มจอ</div>
+          </div>
+        </div>
+
+        <p style="font-size:13px;color:#be185d;margin-top:8px;">(วิดีโอเล่นวนซ้ำอัตโนมัติ • แตะที่วิดีโอเพื่อขยายและฟังเสียงได้นะคะ 🔍)</p>
+
+        <button class="btn-pink full-width" onclick="goToSlide(3)">
+          <span>มีคำถามอยากถามอ้วนหน่อย... 🐾</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 3: QUESTION FOR SNO WITH 3 CUTE LITTLE PIGS -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <section class="slide" id="slide-3">
+      <div class="card" style="padding-top:20px;">
+        
+        <div>
+          <span class="badge">
+            <span>✨</span> Can I Ask You Something? ♡ <span>✨</span>
+          </span>
+        </div>
+
+        <p style="font-size:14px;color:#946b7a;font-family:'Mali',sans-serif;margin-bottom:6px;">
+          ก่อนจะไปต่อ ขอถามอะไรเธออย่างนึงได้ไหมคะ
+        </p>
+
+        <h2 style="font-size:clamp(17px,3.2vw,22px);color:#4a2835;font-weight:700;line-height:1.5;margin-bottom:14px;">
+          “ เธอรักเค้าที่ไหนคั๊บบ แล้วรสผิดไหมที่อ้วนมารักเค้า ? ”
+        </h2>
+
+        <!-- The question box wrapper with 3 little pigs perched on corners -->
+        <div class="question-wrapper">
+          
+          <!-- PIG 1 (Top Left) -->
+          <div class="pig-tl">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="48" cy="56" rx="28" ry="24" fill="#ffb4d6" stroke="#f472b6" stroke-width="2.5"/>
+              <path d="M22 62 Q14 62 16 54 Q18 48 24 52" stroke="#ec4899" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <ellipse cx="32" cy="76" rx="7" ry="5" fill="#f472b6"/>
+              <circle cx="58" cy="38" r="22" fill="#ffbada" stroke="#f472b6" stroke-width="2.5"/>
+              <path d="M42 22 C38 12 48 10 52 18 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              <path d="M68 20 C74 12 82 16 76 25 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              <path d="M50 34 Q54 30 58 34" stroke="#4a2835" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <path d="M66 35 Q70 31 74 35" stroke="#4a2835" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <circle cx="48" cy="40" r="4.5" fill="#ff70a6" opacity="0.6"/>
+              <circle cx="76" cy="41" r="4.5" fill="#ff70a6" opacity="0.6"/>
+              <ellipse cx="62" cy="42" rx="9" ry="6.5" fill="#ff85b8" stroke="#e11d48" stroke-width="1.5"/>
+              <ellipse cx="59" cy="42" rx="1.8" ry="2.2" fill="#881337"/>
+              <ellipse cx="65" cy="42" rx="1.8" ry="2.2" fill="#881337"/>
+              <ellipse cx="50" cy="56" rx="6" ry="4.5" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              <ellipse cx="72" cy="57" rx="6" ry="4.5" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+            </svg>
+          </div>
+
+          <!-- PIG 2 (Top Right) -->
+          <div class="pig-tr">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="54" cy="58" rx="26" ry="23" fill="#ffb4d6" stroke="#f472b6" stroke-width="2.5"/>
+              <path d="M78 62 Q86 60 84 52 Q80 48 74 54" stroke="#ec4899" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <circle cx="44" cy="38" r="22" fill="#ffbada" stroke="#f472b6" stroke-width="2.5"/>
+              <path d="M30 22 C24 14 34 10 38 18 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              <path d="M52 18 C58 10 68 14 62 24 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              <circle cx="58" cy="18" r="4" fill="#fef08a"/>
+              <circle cx="58" cy="18" r="1.5" fill="#f59e0b"/>
+              <circle cx="37" cy="35" r="2.5" fill="#4a2835"/>
+              <path d="M49 35 Q53 32 57 36" stroke="#4a2835" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+              <circle cx="33" cy="41" r="4.5" fill="#ff70a6" opacity="0.6"/>
+              <circle cx="59" cy="41" r="4.5" fill="#ff70a6" opacity="0.6"/>
+              <ellipse cx="45" cy="43" rx="9" ry="6.5" fill="#ff85b8" stroke="#e11d48" stroke-width="1.5"/>
+              <ellipse cx="42" cy="43" rx="1.8" ry="2.2" fill="#881337"/>
+              <ellipse cx="48" cy="43" rx="1.8" ry="2.2" fill="#881337"/>
+              <ellipse cx="32" cy="56" rx="6" ry="4.5" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              <g transform="translate(68, 30) rotate(-25)">
+                <ellipse cx="0" cy="0" rx="6" ry="8" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              </g>
+            </svg>
+          </div>
+
+          <!-- PIG 3 (Bottom Left) -->
+          <div class="pig-bl">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="50" cy="62" rx="27" ry="23" fill="#ffb4d6" stroke="#f472b6" stroke-width="2.5"/>
+              <ellipse cx="28" cy="76" rx="8" ry="5.5" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              <ellipse cx="72" cy="76" rx="8" ry="5.5" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              <circle cx="50" cy="38" r="21" fill="#ffbada" stroke="#f472b6" stroke-width="2.5"/>
+              <path d="M33 24 C27 16 37 12 41 20 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              <path d="M60 20 C64 12 74 16 68 25 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.5"/>
+              <circle cx="42" cy="36" r="3.5" fill="#4a2835"/>
+              <circle cx="43" cy="34.5" r="1.2" fill="#ffffff"/>
+              <circle cx="58" cy="36" r="3.5" fill="#4a2835"/>
+              <circle cx="59" cy="34.5" r="1.2" fill="#ffffff"/>
+              <circle cx="36" cy="42" r="4.5" fill="#ff70a6" opacity="0.6"/>
+              <circle cx="64" cy="42" r="4.5" fill="#ff70a6" opacity="0.6"/>
+              <ellipse cx="50" cy="43" rx="8.5" ry="6" fill="#ff85b8" stroke="#e11d48" stroke-width="1.5"/>
+              <ellipse cx="47" cy="43" rx="1.6" ry="2" fill="#881337"/>
+              <ellipse cx="53" cy="43" rx="1.6" ry="2" fill="#881337"/>
+              <path d="M50 54 C46 48 38 52 42 60 L50 68 L58 60 C62 52 54 48 50 54 Z" fill="#f43f5e"/>
+              <ellipse cx="42" cy="60" rx="4.5" ry="4" fill="#f472b6"/>
+              <ellipse cx="58" cy="60" rx="4.5" ry="4" fill="#f472b6"/>
+            </svg>
+          </div>
+
+          <!-- The Question Card -->
+          <div class="question-card">
+            <div class="question-textarea-wrapper">
+              <textarea 
+                id="snoQuestionInput"
+                class="question-textarea" 
+                placeholder="พิมพ์คำตอบของอ้วนที่นี่ได้เลยนะ... จะพิมพ์สั้นหรือยาวก็ได้ เค้าอยากอ่านนะ ♡"
+              ></textarea>
+            </div>
+
+            <div class="question-card-divider"></div>
+
+            <div class="question-footer-row">
+              <span class="question-hint-left">เขียนจากใจได้เลยนะ ♡</span>
+              <button class="btn-send-mini" id="btnSendAnswerMini" onclick="submitAnswer()">
+                <span>ส่งคำตอบให้เค้า ♡</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <div id="answerSavedBox" class="answer-saved-box" style="display:none;">
+          <p style="font-weight:700;color:#db2777;margin-bottom:4px;">✨ บันทึกไว้ในใจเราแล้วนะ ♡ ✨</p>
+          <p id="savedAnswerPreview" style="font-style:italic;color:#4a2835;"></p>
+        </div>
+
+        <button class="btn-pink full-width" id="btnSendAnswerBig" onclick="submitAnswer()">
+          <span>ส่งคำตอบให้เค้า ♡</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 4: SCENE 7 (A LITTLE NOTE BEFORE THE END) -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <section class="slide" id="slide-4">
+      <div class="card">
+        <span class="badge">
+          <span>✨</span> A Little Note Before the End ♡ <span>✨</span>
+        </span>
+
+        <div class="note-card" style="margin-top:10px;">
+          <div style="width:48px;height:48px;border-radius:50%;background:#fdf2f8;border:2px solid #f9a8d4;display:flex;align-items:center;justify-content:center;margin:0 auto 16px auto;color:#ec4899;box-shadow:0 4px 12px rgba(236,72,153,0.25);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          </div>
+
+          <p class="note-quote1">
+            “ เค้ารักที่เธอยอมรำบาคไปกลับเค้า ไม่ว่าเค้าจะแย่แค่ไหน เราก็จับมือผ่านทั้งเรื่องเล็กเรื่องใหญ่ด้วยกันถึงตรงนี้ ”
+          </p>
+
+          <p class="note-quote2">
+            “ เธอเป็นคนเก่ง เรียนเก่งกว่าเค้าเป็น 10 10 เท่าอะ ที่รักเก่งที่สุดรู้ไหม ♡ ”
+          </p>
+        </div>
+
+        <button class="btn-pink full-width" onclick="goToSlide(5)">
+          <span>เปิดจดหมายกันนะ 💌</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 5: SCENE 8 (THE FINAL LETTER - 2 PAGES) -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <section class="slide" id="slide-5">
+      <div class="card">
+        <span class="badge">
+          <span>✨</span> One last thing, just for you ♡ <span>✨</span>
+        </span>
+
+        <h2 style="font-size:clamp(18px,3.5vw,24px);color:#4a2835;font-weight:800;margin-bottom:12px;">
+          มีอีกอย่างหนึ่งที่เราอยากบอกอ้วน
+        </h2>
+
+        <!-- STAGE 1: Sealed Interactive Envelope -->
+        <div id="envelopeClosedContainer">
+          <div class="envelope-interactive" onclick="openFinalEnvelope()">
+            <div class="envelope-ribbon-v"></div>
+            <div class="envelope-ribbon-h"></div>
+            <div class="envelope-wax-seal">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+            <div style="position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:12.5px;color:#9d174d;font-family:'Mali',sans-serif;font-weight:600;z-index:10;">
+              แตะที่ซองจดหมายเพื่อเปิดอ่าน ♡
+            </div>
+          </div>
+
+          <button class="btn-pink full-width" onclick="openFinalEnvelope()">
+            <span>เปิดอ่านจดหมาย 💌</span>
+          </button>
+        </div>
+
+        <!-- STAGE 2: Unfolded Stationary Letter (2 Pages) -->
+        <div id="envelopeOpenedContainer" style="display:none;">
+          <div class="letter-paper">
+            <div class="letter-title">
+              <span>ถึงอ้วน ♡</span>
+              <span style="font-size:13px;font-weight:normal;color:#be185d;margin-left:auto;" id="letterPageIndicator">(หน้า 1/2)</span>
+            </div>
+
+            <!-- Page 1 -->
+            <div id="letterPage1" class="letter-body">
+              <p>ถ้าอ้วนอ่านมาถึงตรงนี้แล้วก็จบแล้วอ้วน อยากบอกว่าขอบคุณที่รักที่เข้ามาอยู่ในชีวิตแย่ๆ แบบเค้า ทำให้เค้าดีขึ้น ตั้งใจเรียน เค้าอยากเรียนเก่งเพื่อมีอนาคตดีๆ แล้วดูแลเธอให้เธอมีความสุข</p>
+              <p>อ้วนต้องทำตัวดีๆ ห้ามดื้อ กินน้อยๆ อย่ากินของหวานเยอะเดี๋ยวร่างกายไม่แข็งแรงรู้ไหม</p>
+              <p>ตั้งใจเรียนเยอะๆ เค้าพร้อมอยู่ข้างอ้วนนะครับ 1 ปีนี้เค้ามีความสุขมากๆ เลยนะ เป็นไปอีกนานๆ เลยนะอ้วน</p>
+            </div>
+
+            <!-- Page 2 -->
+            <div id="letterPage2" class="letter-body" style="display:none;">
+              <p>แล้วต่อจากนี้เค้าจะทำตัวดีๆ ไม่ดื้อไม่ซนกะแฟนแล้ว เธอก็ห้ามดื้อด้วย จะหาเงินเยอะๆ มากินของอ้วนๆ ไปด้วยกัน</p>
+              <p>เค้าจะอยู่ข้างเธอเสมอนะคะ เสียใจ นอย เฟล ทำผิดหรือเกิดอะไรขึ้น หันมาหาเค้าได้นะคะ</p>
+              <p>เค้าจะช่วยจับมือเธอแก้ทุกอย่างไปพร้อมอ้วนนะคะ เค้าขอบคุณและรักอ้วนนะะนะนนะ ♡</p>
+              <div class="letter-signoff">From a guy next to you 🤍</div>
+            </div>
+          </div>
+
+          <button id="btnLetterNextPage" class="btn-pink full-width" onclick="flipLetterPage(2)">
+            <span>อ่านต่อ ♡</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+
+          <button id="btnLetterProceed" class="btn-pink full-width" style="display:none;" onclick="goToSlide(6)">
+            <span>มีอีกสิ่งหนึ่งจะบอก... 🎁</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 6: SCENE 9 (A LITTLE SURPRISE & 10-SEC CORNER ORCHIDS) -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <section class="slide" id="slide-6">
+      <div class="card">
+        <span class="badge">
+          <span>✨</span> A Little Surprise ❤️‍🩹 <span>✨</span>
+        </span>
+
+        <p style="font-size:14px;color:#946b7a;font-family:'Mali',sans-serif;margin:8px 0 16px 0;">
+          แล้วก็... วันนี้ยังมีอะไรอีกนิดหน่อยที่เราเตรียมไว้ให้ด้วย
+        </p>
+
+        <!-- STAGE 1: Gift Box -->
+        <div id="giftClosedContainer">
+          <div class="gift-interactive" onclick="unwrapGift()">
+            <div class="gift-ribbon-v"></div>
+            <div class="gift-ribbon-h"></div>
+            <div class="gift-bow">🎀</div>
+            <div style="position:absolute;bottom:12px;color:#ffffff;font-size:13px;font-weight:700;text-shadow:0 2px 4px rgba(0,0,0,0.3);z-index:10;">
+              แตะเพื่อเปิดของขวัญ
+            </div>
+          </div>
+
+          <button class="btn-pink" style="margin-top:20px;" onclick="unwrapGift()">
+            <span>เปิดกล่องเซอร์ไพรส์ 🎁</span>
+          </button>
+        </div>
+
+        <!-- STAGE 2: Realistic Blooming Orchid Flower -->
+        <div id="giftOpenedContainer" style="display:none;">
+          <div class="orchid-container">
+            <svg viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;filter:drop-shadow(0 10px 20px rgba(226,72,111,0.25));">
+              <defs>
+                <linearGradient id="orchidStemGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#84cc16" />
+                  <stop offset="50%" stop-color="#4d7c0f" />
+                  <stop offset="100%" stop-color="#365314" />
+                </linearGradient>
+                <linearGradient id="orchidBudGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#fdf2f8" />
+                  <stop offset="60%" stop-color="#f472b6" />
+                  <stop offset="100%" stop-color="#65a30d" />
+                </linearGradient>
+                <radialGradient id="topSepalGrad" cx="50%" cy="30%" r="70%">
+                  <stop offset="0%" stop-color="#ffffff" />
+                  <stop offset="45%" stop-color="#fff1f5" />
+                  <stop offset="85%" stop-color="#fbcfe8" />
+                  <stop offset="100%" stop-color="#f472b6" />
+                </radialGradient>
+                <radialGradient id="largePetalGrad" cx="45%" cy="40%" r="65%">
+                  <stop offset="0%" stop-color="#ffffff" />
+                  <stop offset="50%" stop-color="#fff5f8" />
+                  <stop offset="80%" stop-color="#fce7f3" />
+                  <stop offset="95%" stop-color="#f9a8d4" />
+                  <stop offset="100%" stop-color="#ec4899" />
+                </radialGradient>
+                <radialGradient id="lowerSepalGrad" cx="50%" cy="40%" r="70%">
+                  <stop offset="0%" stop-color="#ffffff" />
+                  <stop offset="60%" stop-color="#fdf2f8" />
+                  <stop offset="90%" stop-color="#fbcfe8" />
+                  <stop offset="100%" stop-color="#f472b6" />
+                </radialGradient>
+                <radialGradient id="lipGrad" cx="50%" cy="40%" r="60%">
+                  <stop offset="0%" stop-color="#f43f5e" />
+                  <stop offset="40%" stop-color="#e11d48" />
+                  <stop offset="80%" stop-color="#be123c" />
+                  <stop offset="100%" stop-color="#881337" />
+                </radialGradient>
+                <radialGradient id="throatYellowGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#fef08a" />
+                  <stop offset="40%" stop-color="#fde047" />
+                  <stop offset="80%" stop-color="#eab308" />
+                  <stop offset="100%" stop-color="#ca8a04" />
+                </radialGradient>
+                <linearGradient id="columnGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#ffffff" />
+                  <stop offset="70%" stop-color="#fff1f5" />
+                  <stop offset="100%" stop-color="#fbcfe8" />
+                </linearGradient>
+              </defs>
+
+              <path d="M 60 290 Q 110 240 145 195 T 195 90 T 240 40" stroke="url(#orchidStemGrad)" stroke-width="5" stroke-linecap="round"/>
+              
+              <g transform="translate(230, 42) rotate(-25)">
+                <path d="M 0 0 C 4 -8, 14 -8, 18 0 C 14 10, 4 10, 0 0 Z" fill="url(#orchidBudGrad)" stroke="#4d7c0f" stroke-width="0.8"/>
+              </g>
+              <g transform="translate(195, 92) rotate(15)">
+                <path d="M 0 0 C 6 -11, 20 -11, 24 0 C 18 12, 6 12, 0 0 Z" fill="url(#orchidBudGrad)" stroke="#4d7c0f" stroke-width="0.8"/>
+              </g>
+
+              <g transform="translate(160, 180)">
+                <path d="M 0 5 C -35 25, -60 55, -68 88 C -72 105, -55 118, -35 110 C -15 102, -5 65, 0 10 Z" fill="url(#lowerSepalGrad)"/>
+                <path d="M 0 5 C 35 25, 60 55, 68 88 C 72 105, 55 118, 35 110 C 15 102, 5 65, 0 10 Z" fill="url(#lowerSepalGrad)"/>
+                <path d="M -12 -5 C -32 -35, -35 -75, -20 -105 C -10 -125, 10 -125, 20 -105 C 35 -75, 32 -35, 12 -5 Z" fill="url(#topSepalGrad)"/>
+                <path d="M -8 -8 C -40 -35, -85 -45, -112 -25 C -135 -8, -135 28, -108 52 C -82 72, -42 55, -8 12 Z" fill="url(#largePetalGrad)"/>
+                <path d="M 8 -8 C 40 -35, 85 -45, 112 -25 C 135 -8, 135 28, 108 52 C 82 72, 42 55, 8 12 Z" fill="url(#largePetalGrad)"/>
+                <path d="M -4 5 C -18 2, -28 10, -26 22 C -24 32, -12 30, -3 20 Z" fill="url(#throatYellowGrad)" stroke="#be123c" stroke-width="0.8"/>
+                <path d="M 4 5 C 18 2, 28 10, 26 22 C 24 32, 12 30, 3 20 Z" fill="url(#throatYellowGrad)" stroke="#be123c" stroke-width="0.8"/>
+                <path d="M 0 16 C -12 24, -22 36, -20 52 C -18 64, -8 68, 0 74 C 8 68, 18 64, 20 52 C 22 36, 12 24, 0 16 Z" fill="url(#lipGrad)"/>
+                <path d="M -4 72 C -10 78, -16 82, -18 78 C -20 74, -14 70, -6 68" stroke="#9f1239" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M 4 72 C 10 78, 16 82, 18 78 C 20 74, 14 70, 6 68" stroke="#9f1239" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                <path d="M -5 -8 C -6 -18, -5 -22, 0 -24 C 5 -22, 6 -18, 5 -8 C 4 0, -4 0, -5 -8 Z" fill="url(#columnGrad)" stroke="#f472b6" stroke-width="0.6"/>
+              </g>
+            </svg>
+          </div>
+
+          <div class="surprise-text-box">
+            <p style="font-size:14px;color:#946b7a;">คำใบ้ของขวัญตัวจริง 🎁</p>
+            <p class="surprise-clue">“ ของขวัญนะอ้วน ยักจ๊ะเสม๋อ ❤️‍🩹 ”</p>
+            <p style="font-size:15px;color:#be185d;font-family:'Mali',sans-serif;margin-top:4px;">
+              (สโนคะ หันไปลองเปิดลิ้นชักด้านหน้าดูหน่อยค่ะ ❤️‍🩹)
+            </p>
+            <p style="font-size:13px;color:#9d174d;margin-top:6px;">หวังว่าจะยิ้มตอนเห็นนะ ♡</p>
+          </div>
+
+          <button class="btn-pink full-width" onclick="goToSlide(7)">
+            <span>จบเรื่องราวของวันนี้ ❤️‍🩹</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <!-- SLIDE 7: SCENE 10 (FINAL SCREEN) -->
+    <!-- ══════════════════════════════════════════════════════════ -->
+    <section class="slide" id="slide-7">
+      <div class="card" style="padding:36px 20px;">
+        <div style="font-size:28px;margin-bottom:14px;">🌸 💗 ✨</div>
+
+        <h2 class="final-quote-en">Our story is still being written... ♡</h2>
+        <p class="final-quote-th">เรื่องราวของเรายังมีต่ออีกเยอะเลยนะ</p>
+
+        <div class="hearts-divider">♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥ ♥</div>
+
+        <p class="final-credits">
+          Made with love by Bigbike, just for Bonus ♡
+        </p>
+
+        <button class="btn-pink" onclick="restartStory()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <span>ดูเรื่องราวของเราอีกรอบ ↺</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- FLOATING MINI VINYL MUSIC PLAYER WIDGET -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <div id="music-player-widget" onclick="toggleMusic()">
+    <div class="vinyl-disc" id="vinylDisc">
+      <div class="vinyl-center-dot"></div>
+    </div>
+    <div class="music-info">
+      <span class="music-title">รักคุณเข้าอีกแล้ว ♡</span>
+      <span class="music-status" id="musicStatusText">แตะเพื่อเปิดเพลง</span>
+    </div>
+  </div>
+
+  <!-- Hidden YouTube Player Container -->
+  <div id="yt-player-container" style="position:fixed;width:1px;height:1px;left:-9999px;opacity:0.01;pointer-events:none;"></div>
+
+  <!-- Local Audio Fallback if offline / blocked -->
+  <audio id="localAudio" loop preload="auto" src="assets/our-song.mp3"></audio>
+
+  <!-- Video Fullscreen Modal -->
+  <div id="videoModal" class="modal" onclick="closeVideoModal(event)">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <div class="modal-controls">
+        <button class="modal-btn" id="modalMuteBtn" onclick="toggleModalVideoMute()" title="เปิด/ปิดเสียง">🔊</button>
+        <button class="modal-btn" onclick="closeVideoModal()" title="ปิด">✕</button>
+      </div>
+      <video id="modalVideoPlayer" controls playsinline webkit-playsinline></video>
+    </div>
+  </div>
+
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <!-- JAVASCRIPT LOGIC -->
+  <!-- ══════════════════════════════════════════════════════════ -->
+  <script>
+    // ── Global Configuration ─────────────────────────────────────
+    // New password requested: 051168 (6 digits)
+    const PASSWORD = "051168";
+    const TOTAL_SLIDES = 8; // 0 to 7
+    let currentSlide = 0;
+    let enteredPassword = "";
+
+    // ── DOM References ──────────────────────────────────────────
+    const gateDisplay = document.getElementById("gateDisplay");
+    const gateNotice = document.getElementById("gateNotice");
+    const topNav = document.getElementById("top-nav");
+    const navBackBtn = document.getElementById("navBackBtn");
+    const navProgressDots = document.getElementById("navProgressDots");
+    const bgLayer = document.getElementById("bg-layer");
+    const vinylDisc = document.getElementById("vinylDisc");
+    const musicStatusText = document.getElementById("musicStatusText");
+
+    // ── YouTube & Music Controller ──────────────────────────────
+    let ytPlayer = null;
+    let isMusicPlaying = false;
+    let hasUserInteracted = false;
+    const localAudio = document.getElementById("localAudio");
+
+    window.onYouTubeIframeAPIReady = function() {
+      ytPlayer = new YT.Player('yt-player-container', {
+        height: '100',
+        width: '100',
+        videoId: 'XYxpnHeiPZk',
+        playerVars: {
+          autoplay: 1,
+          loop: 1,
+          playlist: 'XYxpnHeiPZk',
+          controls: 0,
+          playsinline: 1,
+          enablejsapi: 1
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    };
+
+    function onPlayerReady(event) {
+      if (hasUserInteracted) {
+        startPlayingAudio();
+      }
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING) {
+        setMusicUIState(true);
+      } else if (event.data === YT.PlayerState.PAUSED || event.data === YT.PlayerState.ENDED) {
+        setMusicUIState(false);
+      }
+    }
+
+    function setMusicUIState(playing) {
+      isMusicPlaying = playing;
+      if (playing) {
+        vinylDisc.classList.add("playing");
+        musicStatusText.textContent = "กำลังเล่นคลอเบาๆ 🎵";
+      } else {
+        vinylDisc.classList.remove("playing");
+        musicStatusText.textContent = "แตะเพื่อเล่นเพลง 🎵";
+      }
+    }
+
+    function startPlayingAudio() {
+      hasUserInteracted = true;
+      let playedViaYT = false;
+
+      if (ytPlayer && typeof ytPlayer.playVideo === "function") {
+        try {
+          ytPlayer.unMute();
+          ytPlayer.setVolume(85);
+          ytPlayer.playVideo();
+          playedViaYT = true;
+          setMusicUIState(true);
+        } catch (e) {
+          console.warn("YouTube play attempt:", e);
+        }
+      }
+
+      if (!playedViaYT || !ytPlayer) {
+        localAudio.play().then(() => {
+          setMusicUIState(true);
+        }).catch(err => {
+          console.log("Local audio autoplay prevented:", err);
+        });
+      }
+    }
+
+    function toggleMusic() {
+      hasUserInteracted = true;
+      if (isMusicPlaying) {
+        if (ytPlayer && typeof ytPlayer.pauseVideo === "function") {
+          ytPlayer.pauseVideo();
+        }
+        localAudio.pause();
+        setMusicUIState(false);
+      } else {
+        startPlayingAudio();
+      }
+    }
+
+    document.addEventListener("click", function handleFirstClick() {
+      if (!hasUserInteracted) {
+        startPlayingAudio();
+      }
+    }, { once: true });
+
+    document.addEventListener("keydown", function handleFirstKey() {
+      if (!hasUserInteracted) {
+        startPlayingAudio();
+      }
+    }, { once: true });
+
+
+    // ── Floating Hearts and Cute Pigs Alternately ───────────────
+    let floatingToggle = 0;
+
+    function createFloatingItem() {
+      floatingToggle++;
+      const item = document.createElement("div");
+      item.className = "floating-item";
+
+      const left = 4 + Math.random() * 88;
+      const duration = 7.5 + Math.random() * 4;
+      item.style.left = `${left}vw`;
+      item.style.animationDuration = `${duration}s`;
+
+      if (floatingToggle % 2 === 1) {
+        // Floating Heart
+        item.classList.add("floating-heart");
+        item.textContent = Math.random() > 0.3 ? "♥" : "♡";
+        const colors = ['#f472b6', '#ec4899', '#fbcfe8', '#ff85b8', '#fda4af', '#f0abfc'];
+        item.style.color = colors[Math.floor(Math.random() * colors.length)];
+        item.style.fontSize = `${16 + Math.random() * 20}px`;
+      } else {
+        // Floating Cute Pig
+        item.classList.add("floating-pig");
+        item.innerHTML = `
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <ellipse cx="50" cy="50" rx="34" ry="30" fill="#ffb4d6" stroke="#f472b6" stroke-width="2.5"/>
+            <path d="M25 32 C18 16 34 14 40 24 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.8"/>
+            <path d="M75 32 C82 16 66 14 60 24 Z" fill="#f472b6" stroke="#db2777" stroke-width="1.8"/>
+            <circle cx="39" cy="46" r="3.2" fill="#4a2835"/>
+            <circle cx="61" cy="46" r="3.2" fill="#4a2835"/>
+            <circle cx="32" cy="53" r="4.5" fill="#ff70a6" opacity="0.6"/>
+            <circle cx="68" cy="53" r="4.5" fill="#ff70a6" opacity="0.6"/>
+            <ellipse cx="50" cy="54" rx="10" ry="7.5" fill="#ff85b8" stroke="#db2777" stroke-width="1.8"/>
+            <ellipse cx="46.5" cy="54" rx="1.8" ry="2.2" fill="#881337"/>
+            <ellipse cx="53.5" cy="54" rx="1.8" ry="2.2" fill="#881337"/>
+          </svg>
+        `;
+      }
+
+      bgLayer.appendChild(item);
+      setTimeout(() => item.remove(), duration * 1000);
+    }
+
+    // Spawn hearts and pigs continually
+    setInterval(createFloatingItem, 750);
+    for (let i = 0; i < 7; i++) {
+      setTimeout(createFloatingItem, i * 220);
+    }
+
+
+    // ── Navigation & Slide Controller ───────────────────────────
+    function initProgressDots() {
+      navProgressDots.innerHTML = "";
+      for (let i = 1; i < TOTAL_SLIDES; i++) {
+        const dot = document.createElement("span");
+        dot.className = `nav-dot ${i === currentSlide ? "active" : ""}`;
+        dot.id = `navDot-${i}`;
+        navProgressDots.appendChild(dot);
+      }
+    }
+    initProgressDots();
+
+    function goToSlide(slideIndex) {
+      if (slideIndex < 0 || slideIndex >= TOTAL_SLIDES) return;
+
+      const prevEl = document.getElementById(`slide-${currentSlide}`);
+      if (prevEl) prevEl.classList.remove("active");
+
+      currentSlide = slideIndex;
+
+      const nextEl = document.getElementById(`slide-${currentSlide}`);
+      if (nextEl) nextEl.classList.add("active");
+
+      if (currentSlide > 0) {
+        topNav.classList.remove("hidden");
+      } else {
+        topNav.classList.add("hidden");
+      }
+
+      for (let i = 1; i < TOTAL_SLIDES; i++) {
+        const dot = document.getElementById(`navDot-${i}`);
+        if (dot) {
+          if (i === currentSlide) {
+            dot.classList.add("active");
+          } else {
+            dot.classList.remove("active");
+          }
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      if (currentSlide === 1) {
+        startCounter();
+      }
+    }
+
+    navBackBtn.addEventListener("click", () => {
+      if (currentSlide > 1) {
+        goToSlide(currentSlide - 1);
+      } else if (currentSlide === 1) {
+        goToSlide(0);
+      }
+    });
+
+    function restartStory() {
+      goToSlide(1);
+    }
+
+
+    // ── Password Gate Logic (051168) ────────────────────────────
+    function paintDisplay() {
+      gateDisplay.textContent = (enteredPassword && enteredPassword.length > 0) ? enteredPassword.replace(/./g, "♥") : "Enter Password";
+    }
+
+    function checkPassword() {
+      startPlayingAudio();
+      if (enteredPassword === PASSWORD) {
+        gateNotice.textContent = "รหัสถูกต้องแล้วนะคนเก่ง 💖 กำลังพาเข้าไป...";
+        try {
+          confetti({
+            particleCount: 50,
+            spread: 60,
+            origin: { y: 0.6 }
+          });
+        } catch(e){}
+        setTimeout(() => {
+          goToSlide(1);
+        }, 700);
+      } else {
+        gateNotice.textContent = "รหัสยังไม่ถูกน้า ลองอีกครั้งนะคะ 💕";
+        enteredPassword = "";
+        paintDisplay();
+      }
+    }
+
+    document.querySelectorAll(".key-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const k = btn.dataset.key;
+        if (k === "clear") {
+          enteredPassword = "";
+          gateNotice.textContent = "ล้างรหัสแล้ว 💗";
+          paintDisplay();
+          return;
+        }
+        if (k === "enter") {
+          checkPassword();
+          return;
+        }
+        if (enteredPassword.length < 10) {
+          enteredPassword += k;
+          paintDisplay();
+        }
+        if (enteredPassword.length >= PASSWORD.length) {
+          checkPassword();
+        }
+      });
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (currentSlide === 0) {
+        if (/^[0-9]$/.test(e.key)) {
+          startPlayingAudio();
+          if (enteredPassword.length < 10) {
+            enteredPassword += e.key;
+            paintDisplay();
+          }
+          if (enteredPassword.length >= PASSWORD.length) {
+            checkPassword();
+          }
+        } else if (e.key === "Backspace") {
+          enteredPassword = enteredPassword.slice(0, -1);
+          paintDisplay();
+        } else if (e.key === "Enter") {
+          checkPassword();
+        }
+      }
+    });
+
+
+    // ── Real-Time Counter (From 5/11/68 = 2025-11-05 18:23:00) ──
+    let counterInterval = null;
+    function startCounter() {
+      if (counterInterval) return;
+      // Start date: 5 พฤศจิกายน 2568 (2025) 18:23:00
+      const startDate = new Date("2025-11-05T18:23:00");
+
+      function update() {
+        const diffMs = Math.max(0, Date.now() - startDate.getTime());
+        let totalSecs = Math.floor(diffMs / 1000);
+
+        const weeks = Math.floor(totalSecs / (7 * 86400));
+        totalSecs %= (7 * 86400);
+
+        const days = Math.floor(totalSecs / 86400);
+        totalSecs %= 86400;
+
+        const hours = Math.floor(totalSecs / 3600);
+        totalSecs %= 3600;
+
+        const mins = Math.floor(totalSecs / 60);
+        const secs = totalSecs % 60;
+
+        document.getElementById("weeks").textContent = String(weeks).padStart(2, "0");
+        document.getElementById("days").textContent = String(days).padStart(2, "0");
+        document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+        document.getElementById("mins").textContent = String(mins).padStart(2, "0");
+        document.getElementById("secs").textContent = String(secs).padStart(2, "0");
+      }
+
+      update();
+      // Tick every 1000ms (Real-time live countdown/up)
+      counterInterval = setInterval(update, 1000);
+    }
+
+
+    // ── Question Box Submission (Slide 3) ───────────────────────
+    const snoQuestionInput = document.getElementById("snoQuestionInput");
+    const answerSavedBox = document.getElementById("answerSavedBox");
+    const savedAnswerPreview = document.getElementById("savedAnswerPreview");
+
+    const storedAnswer = localStorage.getItem("sno_surprise_answer");
+    if (storedAnswer) {
+      snoQuestionInput.value = storedAnswer;
+      answerSavedBox.style.display = "block";
+      savedAnswerPreview.textContent = `“ ${storedAnswer} ”`;
+    }
+
+    function submitAnswer() {
+      const val = snoQuestionInput.value.trim();
+      if (!val) {
+        alert("พิมพ์คำตอบของอ้วนให้เค้าหน่อยน้า เค้าอยากอ่านจริงๆ นะคะ ♡");
+        snoQuestionInput.focus();
+        return;
+      }
+
+      localStorage.setItem("sno_surprise_answer", val);
+      localStorage.setItem("sno_answer_time", new Date().toISOString());
+
+      answerSavedBox.style.display = "block";
+      savedAnswerPreview.textContent = `“ ${val} ”`;
+
+      try {
+        confetti({
+          particleCount: 55,
+          spread: 70,
+          origin: { y: 0.65 },
+          colors: ['#f472b6', '#fbcfe8', '#fda4af', '#fef08a', '#ffffff']
+        });
+      } catch(e){}
+
+      setTimeout(() => {
+        goToSlide(4);
+      }, 850);
+    }
+
+
+    // ── Final Letter (Slide 5) ──────────────────────────────────
+    function openFinalEnvelope() {
+      document.getElementById("envelopeClosedContainer").style.display = "none";
+      document.getElementById("envelopeOpenedContainer").style.display = "block";
+
+      try {
+        confetti({
+          particleCount: 60,
+          spread: 80,
+          origin: { y: 0.55 },
+          colors: ['#f472b6', '#fda4af', '#ffe4e6', '#fef08a']
+        });
+      } catch(e){}
+    }
+
+    function flipLetterPage(pageNum) {
+      if (pageNum === 2) {
+        document.getElementById("letterPage1").style.display = "none";
+        document.getElementById("letterPage2").style.display = "block";
+        document.getElementById("letterPageIndicator").textContent = "(หน้า 2/2)";
+        document.getElementById("btnLetterNextPage").style.display = "none";
+        document.getElementById("btnLetterProceed").style.display = "inline-flex";
+      }
+    }
+
+
+    // ── Surprise Gift & 10-Second 4-Corner Orchids (Slide 6) ────
+    function unwrapGift() {
+      document.getElementById("giftClosedContainer").style.display = "none";
+      document.getElementById("giftOpenedContainer").style.display = "block";
+
+      // Trigger Confetti
+      try {
+        confetti({
+          particleCount: 80,
+          spread: 85,
+          origin: { y: 0.6 },
+          colors: ['#f472b6', '#fbcfe8', '#f43f5e', '#fef08a', '#ffffff']
+        });
+      } catch(e){}
+
+      // Activate 10-second corner orchids and botanical root border!
+      const overlay = document.getElementById("orchid-root-overlay");
+      overlay.classList.remove("fade-out");
+      overlay.classList.add("active");
+
+      // Exactly 10 seconds duration
+      setTimeout(() => {
+        overlay.classList.add("fade-out");
+        setTimeout(() => {
+          overlay.classList.remove("active");
+          overlay.classList.remove("fade-out");
+        }, 1500); // 1.5s fade out
+      }, 10000);
+    }
+
+
+    // ── Video Modal Viewer (Slide 2) ────────────────────────────
+    const videoModal = document.getElementById("videoModal");
+    const modalVideoPlayer = document.getElementById("modalVideoPlayer");
+    const modalMuteBtn = document.getElementById("modalMuteBtn");
+
+    function openVideoModal(src, title) {
+      modalVideoPlayer.src = src;
+      modalVideoPlayer.muted = false; // Start unmuted in full view
+      modalMuteBtn.textContent = "🔊";
+      videoModal.classList.add("active");
+      modalVideoPlayer.play().catch(e => console.log(e));
+    }
+
+    function closeVideoModal(e) {
+      if (e && e.target !== videoModal && !e.target.classList.contains("modal-btn")) return;
+      modalVideoPlayer.pause();
+      modalVideoPlayer.src = "";
+      videoModal.classList.remove("active");
+    }
+
+    function toggleModalVideoMute() {
+      modalVideoPlayer.muted = !modalVideoPlayer.muted;
+      modalMuteBtn.textContent = modalVideoPlayer.muted ? "🔇" : "🔊";
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        closeVideoModal();
+      }
+    });
+
+  </script>
+</body>
 </html>
