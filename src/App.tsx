@@ -11,8 +11,22 @@ import { SceneFinalReveal } from './components/SceneFinalReveal';
 import { SceneFinalScreen } from './components/SceneFinalScreen';
 import { MusicPlayer } from './components/MusicPlayer';
 import { ImagePreviewModal } from './components/ImagePreviewModal';
+import { PasswordGate } from './components/PasswordGate';
 
 export const App: React.FC = () => {
+  // ── Password Gate ──────────────────────────────────────────────────────────
+  // Use sessionStorage so refreshing the page keeps the gate unlocked for the
+  // current session, but a new tab/window requires re-entering the password.
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
+    return sessionStorage.getItem('sno_gate_unlocked') === '1';
+  });
+
+  const handleUnlock = () => {
+    sessionStorage.setItem('sno_gate_unlocked', '1');
+    setIsUnlocked(true);
+  };
+
+  // ── Story state ─────────────────────────────────────────────────────────────
   const [currentScene, setCurrentScene] = useState<number>(0);
   const [direction, setDirection] = useState<number>(1);
   const [snoAnswer, setSnoAnswer] = useState<string>(() => {
@@ -176,7 +190,12 @@ export const App: React.FC = () => {
   };
 
   return (
+    <AnimatePresence mode="wait">
+      {!isUnlocked ? (
+        <PasswordGate key="gate" onUnlock={handleUnlock} />
+      ) : (
     <div
+      key="story"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
       className="fixed inset-0 w-full h-[100dvh] flex flex-col justify-between overflow-hidden bg-scrapbook-pattern select-none"
@@ -221,6 +240,8 @@ export const App: React.FC = () => {
         snoAnswer={snoAnswer}
       />
     </div>
+      )}
+    </AnimatePresence>
   );
 };
 

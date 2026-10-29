@@ -3,8 +3,19 @@ export interface MemoryItem {
   title: string;
   caption: string;
   date?: string;
-  images: string[]; // Array of photo paths e.g. ['/images/photo-1.jpg'] or ['/images/photo-2-1.jpg', '/images/photo-2-2.jpg', '/images/photo-2-3.jpg']
-  image?: string; // Optional single image fallback
+  // ── Media type ──────────────────────────────────────────────────────────────
+  // Set mediaType to 'video' to display a video player instead of photo stack.
+  // Defaults to 'image' when omitted.
+  mediaType?: 'image' | 'video';
+  // ── Image fields (used when mediaType === 'image' or omitted) ───────────────
+  images: string[]; // Array of photo paths e.g. ['/images/photo-1.jpg']
+  image?: string;   // Optional single image fallback (legacy)
+  // ── Video fields (used when mediaType === 'video') ───────────────────────────
+  // Place the video file at: public/videos/<filename>.mp4
+  // Place the poster image at: public/images/<filename>.jpg  (optional but recommended)
+  videos?: string[];   // e.g. ['/videos/memory-2.mp4']
+  posters?: string[];  // e.g. ['/images/memory-2-cover.jpg']  (poster for each video)
+  // ── Styling ──────────────────────────────────────────────────────────────────
   tapeColor?: 'pink' | 'yellow' | 'blue' | 'green' | 'peach';
   rotation?: number; // slight tilt in degrees, e.g. -2, 1.5, -1
   sticker?: 'heart' | 'sparkle' | 'flower' | 'camera' | 'star' | 'coffee';

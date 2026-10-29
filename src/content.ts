@@ -11,10 +11,21 @@ import type { SiteContent } from './types';
  * 2. เพลงประกอบ (Background Music)
  * 3. ฉากที่ 1: หน้าแรก (Opening Screen)
  * 4. ฉากที่ 2-5: ความทรงจำ 4 ฉาก (Memory 1 to 4)
- *    - ฉากที่ 1: 1 รูป (photo-1.jpg)
- *    - ฉากที่ 2: 3 รูป (photo-2-1.jpg, photo-2-2.jpg, photo-2-3.jpg)
- *    - ฉากที่ 3: 3 รูป (photo-3-1.jpg, photo-3-2.jpg, photo-3-3.jpg)
- *    - ฉากที่ 4: 1 รูป (photo-4.jpg)
+ *    แต่ละ Memory เลือกได้ว่าจะใช้ "image" หรือ "video":
+ *
+ *    ── รูปภาพ (mediaType: 'image' หรือไม่ใส่ก็ได้) ──
+ *    วางไฟล์ที่: public/images/photo-X.jpg
+ *    ใส่ path ใน: images: ['/images/photo-X.jpg']
+ *
+ *    ── วิดีโอ (mediaType: 'video') ──
+ *    วางวิดีโอที่: public/videos/memory-X.mp4
+ *    วางภาพปก:     public/images/memory-X-cover.jpg  (optional)
+ *    ใส่ path ใน:  videos: ['/videos/memory-X.mp4']
+ *                  posters: ['/images/memory-X-cover.jpg']
+ *
+ *    ตัวอย่างการสลับจากรูปเป็นวิดีโอ:
+ *      เปลี่ยน  mediaType: 'image'  →  mediaType: 'video'
+ *      แล้วเพิ่ม videos: ['/videos/memory-2.mp4']
  * 5. ฉากที่ 6: คำถามให้สโนเขียนตอบ (Interactive Write-in Question)
  * 6. ฉากที่ 7: หน้าคั่นก่อนถึงจดหมาย (A Little Note Before the End)
  * 7. ฉากที่ 8: จดหมายฉบับสุดท้าย (The Final Letter)
@@ -28,16 +39,16 @@ export const siteContent: SiteContent = {
   // -----------------------------------------------------------------------
   meta: {
     // ชื่อที่จะแสดงบนแท็บของเบราว์เซอร์ด้านบนสุด และหัวข้อตอนส่งลิงก์ใน LINE
-    title: 'Our Little Story ♡ — To สโน',
+    title: 'เรื่องใหญ่ๆของคนใหญ่ๆ',
     // คำอธิบายตัวอย่างที่จะขึ้นตอนส่งแชร์ลิงก์ให้สโนใน LINE / Messenger
-    description: 'A little story, made just for you ♡ มีเรื่องราวเล็ก ๆ ที่อยากให้สโนลองอ่านดูนะคะ 💌',
+    description: 'เรื่องใหญ่ๆของคนใหญ่ๆ',
     anniversaryDate: 'Our Special Day',
   },
 
   couple: {
-    boyfriendName: 'บลู',      // ชื่อผู้สร้าง
-    girlfriendName: 'สโน',     // ชื่อแฟน
-    specialCallSign: 'สโนคะ',  // คำเรียกติดปากที่อบอุ่น
+    boyfriendName: 'ไบค์',      // ชื่อผู้สร้าง
+    girlfriendName: 'โบนัส',     // ชื่อแฟน
+    specialCallSign: 'เธอคะ',  // คำเรียกติดปากที่อบอุ่น
   },
 
   navigation: {
@@ -50,7 +61,7 @@ export const siteContent: SiteContent = {
   // -----------------------------------------------------------------------
   music: {
     title: 'เรื่องราวของเรา (Our Song)',
-    artist: 'For Snow ♡',
+    artist: 'For Bonus ♡',
     // ไม่จำเป็นต้องใส่รูปภาพ ระบบจะดีไซน์เป็นแผ่นเสียงไวนิลหมุนสุดโรแมนติกให้อัตโนมัติ ♡
     albumCover: '',
     // ไฟล์เพลงในโฟลเดอร์ public/music/our-song.mp3
@@ -62,9 +73,9 @@ export const siteContent: SiteContent = {
   // 3. ฉากที่ 1: หน้าแรก (Opening Screen) - ซองจดหมายเปิดเรื่อง
   // -----------------------------------------------------------------------
   opening: {
-    badge: 'A Little Surprise 💌',
+    badge: 'เรื่องใหญ่ๆของคนใหญ่',
     title: 'A little story, made just for you ♡',
-    subtitle: 'มีเรื่องราวเล็ก ๆ ที่อยากให้สโนลองอ่านดูนะคะ 💌',
+    subtitle: 'มีเรื่องราวเล็ก ๆ ที่อยากให้อ้วนนลองอ่านดูนะคะ 💌',
     envelopeNote: 'For Snow ♡',
     envelopeSubtitle: 'Our Little Storybook',
     buttonText: 'เริ่มเรื่องราวของเรากัน ♡',
@@ -80,33 +91,45 @@ export const siteContent: SiteContent = {
 
   // -----------------------------------------------------------------------
   // 4. ฉากที่ 2-5: ความทรงจำ 4 ฉาก (Polaroid Cards)
-  // - ฉากที่ 1: 1 รูป -> public/images/photo-1.jpg
-  // - ฉากที่ 2: 3 รูป -> public/images/photo-2-1.jpg, photo-2-2.jpg, photo-2-3.jpg
-  // - ฉากที่ 3: 3 รูป -> public/images/photo-3-1.jpg, photo-3-2.jpg, photo-3-3.jpg
-  // - ฉากที่ 4: 1 รูป -> public/images/photo-4.jpg
+  //
+  // 🎞️ วิธีเลือกชนิดสื่อของแต่ละ Memory:
+  //   • รูปภาพ → mediaType: 'image'  (หรือไม่ใส่ mediaType ก็ได้)
+  //             วางไฟล์ที่: public/images/photo-X.jpg
+  //             ใส่ path ใน: images: ['/images/photo-X.jpg']
+  //
+  //   • วิดีโอ → mediaType: 'video'
+  //             วางวิดีโอที่: public/videos/memory-X.mp4
+  //             วางภาพปก:    public/images/memory-X-cover.jpg  (ถ้ามี)
+  //             ใส่ path ใน: videos: ['/videos/memory-X.mp4'],
+  //                          posters: ['/images/memory-X-cover.jpg']
+  //
+  // เปลี่ยนชนิดสื่อได้ง่าย ๆ โดยแก้แค่ mediaType และ path ของไฟล์เท่านั้น ♡
   // -----------------------------------------------------------------------
   memories: [
     {
       id: 1,
+      // ── เปลี่ยนเป็น 'video' และเพิ่ม videos/posters เพื่อใช้วิดีโอแทน ──
+      mediaType: 'image',
       title: 'Memory 1 — The Beginning',
-      caption: ' รูปนี้เป็นรูปแรกในเครื่องของเรา ♡ ',
+      caption: ' รูปนี้เป็นครั้งแรกเยยที่เค้าได้่อยู่ข้างความสำเหร็จของอ้วน ',
       date: '26 Sep 2026',
       images: ['/images/photo-1.jpg'],
+      // videos: ['/videos/memory-1.mp4'],    // ← เปิดใช้เมื่อสลับเป็น video
+      // posters: ['/images/memory-1-cover.jpg'],
       tapeColor: 'pink',
       rotation: -1.5,
       sticker: 'heart',
-      buttonText: 'แล้วหลังจากนั้น... ♡',
+      buttonText: 'แล้วหลังจากนั้น ... ♡',
     },
     {
       id: 2,
+      mediaType: 'video',
       title: 'Memory 2 — A Little Moment',
       caption: 'เป็นช่วงเวลาดี ๆ ที่เราเริ่มได้คุยด้วยกันมากขึ้น ได้แชร์เรื่องราวในแต่ละวันด้วยกัน ♡',
       date: 'Good Memory',
-      images: [
-        '/images/photo-2-1.jpg',
-        '/images/photo-2-2.jpg',
-        '/images/photo-2-3.jpg',
-      ],
+      images: [],
+      videos: ['/videos/memory-2.mp4'], 
+      posters: ['/images/memory-2-cover.jpg'],
       tapeColor: 'yellow',
       rotation: 1.8,
       sticker: 'sparkle',
@@ -114,13 +137,13 @@ export const siteContent: SiteContent = {
     },
     {
       id: 3,
+      mediaType: 'video',
       title: 'Memory 3 — Your Smile',
       caption: 'หนึ่งในสิ่งที่เราชอบก็คือเวลาที่สโนยิ้ม',
       date: '13 Oct. 2026',
-      images: [
-        '/images/photo-3-1.jpg',
-        '/images/photo-3-2.jpg',
-      ],
+      images: [],
+      videos: ['/videos/memory-3.mp4'],
+      posters: ['/images/memory-2-cover.jpg'], // ← ใช้ cover เดียวกันชั่วคราว หรือใส่ path รูปปกที่ต้องการ
       tapeColor: 'peach',
       rotation: -2.2,
       sticker: 'flower',
@@ -128,10 +151,13 @@ export const siteContent: SiteContent = {
     },
     {
       id: 4,
+      mediaType: 'video',
       title: 'Memory 4 — The First Movie Together',
       caption: ' The First Movie Together ♡ ',
       date: '25 Oct. 2026',
-      images: ['/images/photo-4.jpg'],
+      images: [],
+      videos: ['/videos/memory-4.mp4'],
+      posters: ['/images/memory-2-cover.jpg'], // ← ใช้ cover เดียวกันชั่วคราว หรือใส่ path รูปปกที่ต้องการ
       tapeColor: 'blue',
       rotation: 1.2,
       sticker: 'heart',
