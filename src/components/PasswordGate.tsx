@@ -405,7 +405,7 @@ export const PasswordGate: React.FC<PasswordGateProps> = ({ onUnlock }) => {
                     ก่อนจะเข้าไปดู มีคำถามเล็ก ๆ ให้อ้วนนนนนตอบด้วยนะคะ ♡
                   </p>
                   <p className="font-hand text-base text-pink-400 mt-0.5">
-                    จำวันที่สำคัญของเราได้ไหมเอ่ย? 🤍
+                    จำวันครบรอบของเราได้ไหมเคะอ้วน ? 🤍
                   </p>
                 </motion.div>
               ) : (

@@ -93,13 +93,13 @@ export const PolaroidPlaceholder: React.FC<{
   return (
     <div 
       onClick={onClickChange}
-      className={`w-full aspect-[4/3] rounded-sm bg-gradient-to-br ${currentTheme.bg} flex flex-col items-center justify-center p-6 text-center cursor-pointer group transition-all duration-300 hover:brightness-95 border border-[#ede3d4] relative overflow-hidden`}
+      className={`w-full aspect-[4/3] rounded-sm bg-gradient-to-br ${currentTheme.bg} flex flex-col items-center justify-center p-6 text-center border border-[#ede3d4] relative overflow-hidden`}
     >
       {/* Subtle paper grain circles */}
       <div className="absolute top-2 right-2 text-xs opacity-30 select-none">✦</div>
       <div className="absolute bottom-2 left-2 text-xs opacity-30 select-none">✦</div>
       
-      <div className="w-14 h-14 rounded-full bg-white/70 shadow-sm flex items-center justify-center text-2xl mb-2.5 group-hover:scale-110 transition-transform">
+      <div className="w-14 h-14 rounded-full bg-white/70 shadow-sm flex items-center justify-center text-2xl mb-2.5">
         <span>{currentTheme.icon}</span>
       </div>
 
@@ -111,8 +111,8 @@ export const PolaroidPlaceholder: React.FC<{
         {currentTheme.sub}
       </div>
 
-      <div className="mt-3 px-2.5 py-1 rounded-full bg-white/80 border border-[#e8ded0] text-[11px] font-cute text-scrapbook-pink-500 opacity-90 group-hover:bg-scrapbook-pink-100 group-hover:text-scrapbook-pink-600 transition-colors shadow-2xs">
-        แตะเพื่อใส่รูป / พรีวิวรูปนี้ ♡
+      <div className="mt-2.5 px-3 py-0.5 rounded-full bg-white/70 border border-[#e8ded0] text-[10px] font-cute text-scrapbook-pink-400">
+        ความทรงจำของเรา ♡
       </div>
     </div>
   );

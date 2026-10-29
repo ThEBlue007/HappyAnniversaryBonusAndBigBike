@@ -10,19 +10,19 @@ import { SceneFinalLetter } from './components/SceneFinalLetter';
 import { SceneFinalReveal } from './components/SceneFinalReveal';
 import { SceneFinalScreen } from './components/SceneFinalScreen';
 import { MusicPlayer } from './components/MusicPlayer';
-import { ImagePreviewModal } from './components/ImagePreviewModal';
 import { PasswordGate } from './components/PasswordGate';
 
 export const App: React.FC = () => {
-  // ── Password Gate ──────────────────────────────────────────────────────────
-  // Use sessionStorage so refreshing the page keeps the gate unlocked for the
-  // current session, but a new tab/window requires re-entering the password.
-  const [isUnlocked, setIsUnlocked] = useState<boolean>(() => {
-    return sessionStorage.getItem('sno_gate_unlocked') === '1';
-  });
+  // ── Password Gate (หน้าแรกสุดเสมอ) ──────────────────────────────────────────
+  // เริ่มต้นที่หน้าใส่รหัสผ่าน 51168 เป็นด่านแรกสุดก่อนเข้าสู่เรื่องราว
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
+
+  // เคลียร์ค่าค้างเก่าใน sessionStorage เพื่อให้แสดงหน้าใส่รหัสผ่านทุกครั้งที่เปิด/รีเฟรช
+  useEffect(() => {
+    sessionStorage.removeItem('sno_gate_unlocked');
+  }, []);
 
   const handleUnlock = () => {
-    sessionStorage.setItem('sno_gate_unlocked', '1');
     setIsUnlocked(true);
   };
 
@@ -32,10 +32,6 @@ export const App: React.FC = () => {
   const [snoAnswer, setSnoAnswer] = useState<string>(() => {
     return localStorage.getItem('sno_surprise_answer') || '';
   });
-  
-  // Custom images preview state (keyed by photoPath e.g. '/images/photo-2-1.jpg')
-  const [customImages, setCustomImages] = useState<Record<string, string>>({});
-  const [targetPhotoPath, setTargetPhotoPath] = useState<string | null>(null);
 
   // Touch gesture state for mobile swipe
   const touchStartXRef = useRef<number | null>(null);
@@ -61,6 +57,7 @@ export const App: React.FC = () => {
   const handleRestart = () => {
     setDirection(-1);
     setCurrentScene(0);
+    setIsUnlocked(false);
   };
 
   // Sync browser tab title and meta description dynamically
@@ -152,9 +149,7 @@ export const App: React.FC = () => {
       return (
         <SceneMemory
           item={item}
-          customImages={customImages}
           onNext={goToNextScene}
-          onTriggerPicker={(path) => setTargetPhotoPath(path)}
         />
       );
     }
@@ -227,18 +222,6 @@ export const App: React.FC = () => {
 
       {/* Floating Scrapbook Music Player */}
       <MusicPlayer />
-
-      {/* Photo Preview & Secret Menu (for Blue) */}
-      <ImagePreviewModal
-        customImages={customImages}
-        onUpdateImage={(path, base64) =>
-          setCustomImages((prev) => ({ ...prev, [path]: base64 }))
-        }
-        onResetImages={() => setCustomImages({})}
-        targetPhotoPath={targetPhotoPath}
-        onCloseTarget={() => setTargetPhotoPath(null)}
-        snoAnswer={snoAnswer}
-      />
     </div>
       )}
     </AnimatePresence>

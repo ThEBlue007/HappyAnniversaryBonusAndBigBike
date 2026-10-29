@@ -1,16 +1,15 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Calendar, Camera, Heart, ZoomIn, Film } from 'lucide-react';
+import { ArrowRight, Calendar, Heart, ZoomIn, Film } from 'lucide-react';
 import type { MemoryItem } from '../types';
 import { WashiTape, PolaroidPlaceholder } from './DoodleDecorations';
 import { ImageZoomModal } from './ImageZoomModal';
+import { VideoZoomModal } from './VideoZoomModal';
 import { MemoryVideoPlayer } from './MemoryVideoPlayer';
 
 interface SceneMemoryProps {
   item: MemoryItem;
-  customImages?: Record<string, string>; // key = image path e.g. '/images/photo-2-1.jpg'
   onNext: () => void;
-  onTriggerPicker?: (imagePath: string) => void;
 }
 
 // ── helpers ──────────────────────────────────────────────────────────────────
@@ -48,9 +47,7 @@ function getStackStyle(
 
 export const SceneMemory: React.FC<SceneMemoryProps> = ({
   item,
-  customImages = {},
   onNext,
-  onTriggerPicker,
 }) => {
   const isVideoMemory = item.mediaType === 'video';
 
@@ -63,8 +60,6 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
   const [frontIndex, setFrontIndex] = useState<number>(0);
   const [imgErrors, setImgErrors]   = useState<Record<number, boolean>>({});
   const [isZoomOpen, setIsZoomOpen] = useState<boolean>(false);
-
-  const resolvedImages = photoList.map((p) => customImages[p] || p);
 
   const handleImageError = (index: number) =>
     setImgErrors((prev) => ({ ...prev, [index]: true }));
@@ -88,6 +83,7 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
                 sticker={getStickerEmoji(item.sticker)}
                 tapeColor={item.tapeColor || 'pink'}
                 rotation={item.rotation || 0}
+                onOpenZoom={() => setIsZoomOpen(true)}
               />
             ) : (
               /* Video source not yet configured — friendly placeholder */
@@ -135,7 +131,6 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
           <>
             <div className="relative w-full flex flex-col items-center justify-center min-h-[260px] sm:min-h-[290px]">
               {photoList.map((photoPath, idx) => {
-                const currentImgSrc = customImages[photoPath] || photoPath;
                 const style = getStackStyle(idx, frontIndex, photoList.length, item.rotation || 0, isMultiple);
                 const isFront = isMultiple ? idx === frontIndex : true;
 
@@ -186,11 +181,10 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
                           <PolaroidPlaceholder
                             index={item.id}
                             label={`${item.date || 'Memory'} ${isMultiple ? `(${idx + 1}/${photoList.length})` : ''}`}
-                            onClickChange={() => onTriggerPicker?.(photoPath)}
                           />
                         ) : (
                           <img
-                            src={currentImgSrc}
+                            src={photoPath}
                             alt={`${item.title} - ${idx + 1}`}
                             className="w-full h-full object-cover select-none"
                             onError={() => handleImageError(idx)}
@@ -210,20 +204,6 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
                           >
                             <ZoomIn size={12} className="text-scrapbook-pink-500" />
                             <span>ซูมดูรูป ♡</span>
-                          </button>
-                        )}
-
-                        {/* Blue's Quick Image Upload Overlay */}
-                        {!imgErrors[idx] && onTriggerPicker && (
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              onTriggerPicker(photoPath);
-                            }}
-                            className="absolute bottom-2 right-2 bg-black/60 hover:bg-black/80 text-white text-[10px] px-2 py-0.5 rounded-full opacity-0 hover:opacity-100 group-hover:opacity-100 transition-opacity flex items-center gap-1 font-cute z-30"
-                          >
-                            <Camera size={10} />
-                            <span>เปลี่ยนรูป</span>
                           </button>
                         )}
 
@@ -326,18 +306,31 @@ export const SceneMemory: React.FC<SceneMemoryProps> = ({
         </div>
       </div>
 
-      {/* Fullscreen Image Zoom Modal (image mode only) */}
-      {!isVideoMemory && (
+      {/* Modals for Zooming / Expanding */}
+      {!isVideoMemory ? (
         <ImageZoomModal
           isOpen={isZoomOpen}
           onClose={() => setIsZoomOpen(false)}
-          images={resolvedImages}
+          images={photoList}
           currentIndex={frontIndex}
           onIndexChange={(newIdx) => setFrontIndex(newIdx)}
           title={item.title}
           date={item.date}
           caption={item.caption}
         />
+      ) : (
+        item.videos && item.videos.length > 0 && (
+          <VideoZoomModal
+            isOpen={isZoomOpen}
+            onClose={() => setIsZoomOpen(false)}
+            src={item.videos[0]}
+            poster={item.posters?.[0]}
+            title={item.title}
+            date={item.date}
+            caption={item.caption}
+            sticker={getStickerEmoji(item.sticker)}
+          />
+        )
       )}
     </div>
   );

@@ -120,6 +120,38 @@ export const MusicPlayer: React.FC = () => {
     }
   };
 
+  // Track if music was playing before a video paused it
+  const wasPlayingBeforeVideoRef = useRef<boolean>(false);
+
+  // Listen for global video play/pause events to pause/resume background music automatically
+  useEffect(() => {
+    const handlePauseBgMusic = () => {
+      if (audioRef.current && isPlaying) {
+        wasPlayingBeforeVideoRef.current = true;
+        audioRef.current.pause();
+        setIsPlaying(false);
+      }
+    };
+
+    const handleResumeBgMusic = () => {
+      if (audioRef.current && wasPlayingBeforeVideoRef.current) {
+        audioRef.current
+          .play()
+          .then(() => setIsPlaying(true))
+          .catch(() => {});
+        wasPlayingBeforeVideoRef.current = false;
+      }
+    };
+
+    window.addEventListener('pause-bg-music', handlePauseBgMusic);
+    window.addEventListener('resume-bg-music', handleResumeBgMusic);
+
+    return () => {
+      window.removeEventListener('pause-bg-music', handlePauseBgMusic);
+      window.removeEventListener('resume-bg-music', handleResumeBgMusic);
+    };
+  }, [isPlaying]);
+
   // Update progress
   useEffect(() => {
     const audio = audioRef.current;
